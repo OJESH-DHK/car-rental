@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+
+from .models import Vehicle
 
 def index(request):
-    return render(request, 'index.html')
+    vehicles = Vehicle.objects.all() 
+    return render(request, 'index.html', {'vehicles': vehicles})
 
 def about(request):
     return render(request, 'about.html')
@@ -15,8 +18,9 @@ def blog_single(request):
 def car(request):
     return render(request, 'car.html')
 
-def car_single(request):
-    return render(request, 'car-single.html')
+def car_single(request, id):
+    vehicle = get_object_or_404(Vehicle, id=id)
+    return render(request, 'car-single.html', {'vehicle': vehicle})
 
 def contact(request):
     return render(request, 'contact.html')

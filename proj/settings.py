@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 ]
 external_apps = [
     'app',
+    'dashboard',
 ]
 
 INSTALLED_APPS += external_apps

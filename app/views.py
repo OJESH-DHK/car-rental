@@ -4,7 +4,7 @@ from .models import Vehicle, Index
 
 from django.shortcuts import render
 from .models import Vehicle, Index, TripRequest
-from .models import AboutUs, Testimonial
+from .models import AboutUs, Testimonial, Experience, ServicesSection, ServicesOffered
 
 def index(request):
     vehicles = Vehicle.objects.all()
@@ -15,15 +15,13 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-
-
-
-
 def about(request):
     about_content = AboutUs.objects.last()  
     testimonials = Testimonial.objects.all() 
+    experience = Experience.objects.last()
 
     context = {
+        'experience':experience,
         'about': about_content,
         'testimonials': testimonials,
     }
@@ -53,5 +51,13 @@ def main(request):
 def pricing(request):
     return render(request, 'pricing.html')
 
+
 def services(request):
-    return render(request, 'services.html')
+    services_section = ServicesSection.objects.last()
+    top_services = ServicesOffered.objects.all()[:4] if services_section else []
+
+    return render(request, 'services.html', {
+        'services_section': services_section,
+        'top_services': top_services
+    })
+

@@ -76,6 +76,33 @@ class Testimonial(models.Model):
         return f"{self.name} - {self.position}"
 
 
+class Experience(models.Model):
+    year_experienced = models.PositiveIntegerField(default=0)
+    total_cars = models.PositiveIntegerField(default=0)
+    happy_customers = models.PositiveIntegerField(default=0)
+    total_branches = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Counter"
+        verbose_name_plural = "Counter"
+
+    def __str__(self):
+        return "Counter Stats"
+
+class ServicesSection(models.Model):
+    main_image = models.ImageField(upload_to='services/')
+    second_image = models.ImageField(upload_to='services/')
+
+    def __str__(self):
+        return "Services Section"
+        
+class ServicesOffered(models.Model):
+    services_offered = models.CharField(max_length=100)
+    services_offered_desc = models.CharField(max_length=100, null=True)
+    def __str__(self):
+        return "Services offered"
+
+
 
 
 

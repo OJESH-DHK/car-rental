@@ -1,13 +1,35 @@
 from django.shortcuts import get_object_or_404, render
 
-from .models import Vehicle
+from .models import Vehicle, Index
+
+from django.shortcuts import render
+from .models import Vehicle, Index, TripRequest
+from .models import AboutUs, Testimonial
 
 def index(request):
-    vehicles = Vehicle.objects.all() 
-    return render(request, 'index.html', {'vehicles': vehicles})
+    vehicles = Vehicle.objects.all()
+    index_content = Index.objects.last()  
+    context = {
+        'vehicles': vehicles,
+        'index': index_content
+    }
+    return render(request, 'index.html', context)
+
+
+
+
 
 def about(request):
-    return render(request, 'about.html')
+    about_content = AboutUs.objects.last()  
+    testimonials = Testimonial.objects.all() 
+
+    context = {
+        'about': about_content,
+        'testimonials': testimonials,
+    }
+
+    return render(request, 'about.html', context)
+
 
 def blog(request):
     return render(request, 'blog.html')

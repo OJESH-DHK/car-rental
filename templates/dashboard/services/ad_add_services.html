@@ -1,0 +1,23 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}Add Service{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Add New Service</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="service_name" class="form-label">Service Name</label>
+            <input type="text" class="form-control" id="service_name" name="service_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="service_desc" class="form-label">Service Description</label>
+            <textarea class="form-control" id="service_desc" name="service_desc" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Add Service</button>
+        <a href="/dashboard/services/" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+

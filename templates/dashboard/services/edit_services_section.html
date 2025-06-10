@@ -1,0 +1,31 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}Edit Services Section{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Services Section</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="mainImage" class="form-label">Main Image</label><br>
+            {% if services_section.main_image %}
+                <img src="{{ services_section.main_image.url }}" class="img-fluid mb-2" style="max-height: 150px;"><br>
+            {% endif %}
+            <input type="file" class="form-control" id="mainImage" name="main_image">
+        </div>
+
+        <div class="mb-3">
+            <label for="secondImage" class="form-label">Second Image</label><br>
+            {% if services_section.second_image %}
+                <img src="{{ services_section.second_image.url }}" class="img-fluid mb-2" style="max-height: 150px;"><br>
+            {% endif %}
+            <input type="file" class="form-control" id="secondImage" name="second_image">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'service' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

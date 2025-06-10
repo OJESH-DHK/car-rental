@@ -1,0 +1,56 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">About Us Section</h2>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Main Image</th>
+                <th>Sub Image</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if about %}
+            <tr>
+                <td>{{ about.title }}</td>
+                <td>
+                    {% if about.index_image %}
+                        <img src="{{ about.index_image.url }}" class="img-fluid" style="max-height: 120px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td>
+                    {% if about.sub_image %}
+                        <img src="{{ about.sub_image.url }}" class="img-fluid" style="max-height: 120px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td style="max-width: 300px;">{{ about.description|linebreaks }}</td>
+                <td>
+                    <a href="{% url 'ad_about' %}" class="btn btn-primary btn-sm">Edit</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No About Us information found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

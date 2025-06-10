@@ -1,0 +1,25 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}Edit Service{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Service Offered</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="services_offered" class="form-label">Service Title</label>
+            <input type="text" class="form-control" id="services_offered" name="services_offered"
+                   value="{{ service_item.services_offered }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="services_offered_desc" class="form-label">Description</label>
+            <textarea class="form-control" id="services_offered_desc" name="services_offered_desc" rows="4"
+                      required>{{ service_item.services_offered_desc }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'service' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

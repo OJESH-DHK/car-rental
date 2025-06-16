@@ -1,0 +1,57 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}Add Vehicle{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Add New Vehicle</h2>
+    <form method="POST" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Car Brand</label>
+            <input type="text" name="car_brand" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Car Model</label>
+            <input type="text" name="car_model" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Price per Day (Rs)</label>
+            <input type="number" name="price_per_day" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Transmission</label>
+            <select name="transmission" class="form-control" required>
+                <option value="manual">Manual</option>
+                <option value="automatic">Automatic</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Seats</label>
+            <input type="number" name="seats" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Mileage (km)</label>
+            <input type="number" name="mileage" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Luggage Capacity (L)</label>
+            <input type="number" name="luggage_capacity" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Image</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Vehicle</button>
+        <a href="{% url 'admin_vehicles' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

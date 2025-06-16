@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Put Your Car on Rent | Carbook{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'images/bg_3.jpg' %});" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs">
+          <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> 
+          <span>Rent Your Car <i class="ion-ios-arrow-forward"></i></span>
+        </p>
+        <h1 class="mb-3 bread">Put Your Car on Rent</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Form Section -->
+<section class="ftco-section bg-light">
+  <div class="container">
+    <div class="row justify-content-center mb-5 pb-3">
+      <div class="col-md-7 heading-section text-center ftco-animate">
+        <span class="subheading">List Your Car</span>
+        <h2 class="mb-4">Provide Car Details</h2>
+        <p>Fill out the form to list your vehicle for rent on our platform.</p>
+      </div>
+    </div>
+
+    {% if error %}
+      <div class="alert alert-danger text-center">{{ error }}</div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+      <div class="col-md-10 ftco-animate">
+        <form action="" method="POST" enctype="multipart/form-data" class="bg-white p-5 contact-form">
+          {% csrf_token %}
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
+          </div>
+
+          <div class="form-group">
+            <input type="tel" class="form-control" name="phone_number" placeholder="Phone Number" required>
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="car_brand" placeholder="Car Brand (e.g., Toyota)" required>
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control" name="car_model" placeholder="Car Model (e.g., Corolla 2022)" required>
+          </div>
+
+          <div class="form-group">
+            <textarea name="description" cols="30" rows="4" class="form-control" placeholder="Car Description / Remarks" required></textarea>
+          </div>
+
+          <!-- Multiple Vehicle Image Upload -->
+          <div class="form-group">
+            <label><strong>Upload Vehicle Images (Max 10):</strong></label>
+            <input type="file" id="vehicle_images" name="vehicle_images" class="form-control" accept="image/*" multiple required>
+            <small class="text-muted d-block mb-3">You can select one or multiple images.</small>
+
+            <!-- Preview Area -->
+            <div id="imagePreview" class="row g-2"></div>
+          </div>
+
+          <!-- Bluebook Upload -->
+          <div class="form-group">
+            <label><strong>Upload Bluebook Image:</strong></label>
+            <input type="file" class="form-control" name="bluebook_image" accept="image/*" required>
+          </div>
+
+          <div class="form-group">
+            <input type="submit" value="Submit Car for Rent" class="btn btn-primary py-3 px-5">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JavaScript for image preview -->
+<script>
+  const imageInput = document.getElementById('vehicle_images');
+  const previewArea = document.getElementById('imagePreview');
+
+  imageInput.addEventListener('change', function () {
+    previewArea.innerHTML = ''; // Clear existing previews
+    const files = Array.from(this.files);
+
+    if (files.length > 10) {
+      alert("You can upload a maximum of 10 images.");
+      imageInput.value = '';
+      return;
+    }
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const col = document.createElement('div');
+        col.className = 'col-md-3 mb-2';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'img-fluid rounded border';
+        img.style.height = '150px';
+        img.style.objectFit = 'cover';
+
+        col.appendChild(img);
+        previewArea.appendChild(col);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
+{% endblock %}

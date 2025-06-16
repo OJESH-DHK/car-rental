@@ -3,7 +3,7 @@ from app.models import (
     Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
     ServicesSection, ServicesOffered
 )
-from app.models import AboutUs
+from app.models import AboutUs, Vehicle
 from django.contrib import messages
 
 # Create your views here.
@@ -93,6 +93,14 @@ def about_view(request):
     about = AboutUs.objects.first() 
     return render(request, 'dashboard/about/ad_viewabout.html', {'about': about})
 
+
+#trip request 
+def trip_request(request):
+    trip_requests = TripRequest.objects.all()
+    return render(request,'dashboard/trip_request/triprequest.html', {'trip_requests': trip_requests})
+
+
+
 def ad_about(request):
     about = AboutUs.objects.last()
 
@@ -113,5 +121,52 @@ def ad_about(request):
         'about': about
     }
     return render(request, 'dashboard/about/ad_about.html', context)
+
+#add Vehicle
+
+def ad_vehicle(request):
+    vehicles = Vehicle.objects.all()
+    return render(request, 'dashboard/vehicle/ad_vehicle.html', {'vehicles': vehicles})
+
+def admin_add_vehicle(request):
+    if request.method == 'POST':
+        car_brand = request.POST.get('car_brand')
+        car_model = request.POST.get('car_model')
+        price_per_day = request.POST.get('price_per_day')
+        transmission = request.POST.get('transmission')
+        seats = request.POST.get('seats')
+        mileage = request.POST.get('mileage')
+        luggage_capacity = request.POST.get('luggage_capacity')
+        image = request.FILES.get('image')
+
+        Vehicle.objects.create(
+            car_brand=car_brand,
+            car_model=car_model,
+            price_per_day=price_per_day,
+            transmission=transmission,
+            seats=seats,
+            mileage=mileage,
+            luggage_capacity=luggage_capacity,
+            image=image
+        )
+
+        return redirect('admin_vehicles')
+    
+    return render(request, 'dashboard/vehicle/add_vehicle.html')
+
+from app.models import CarRentalRequest
+
+def admin_rental_requests_view(request):
+    rentals = CarRentalRequest.objects.all().order_by('-submitted_at')
+    return render(request, 'dashboard/put_on_rent/car_rental_requests.html', {'rentals': rentals})
+
+def admin_rental_detail(request, id):
+    rental = get_object_or_404(CarRentalRequest, id=id)
+    context = {
+        'rental': rental,
+    }
+    return render(request, 'dashboard/put_on_rent/rental_detail.html', context)
+
+
 
 

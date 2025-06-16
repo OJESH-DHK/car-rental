@@ -1,17 +1,59 @@
-from django.shortcuts import get_object_or_404, render
-from .models import (
-    Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
-    ServicesSection, ServicesOffered
-)
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from itertools import chain
+
+from .models import Vehicle, Index, TripRequest, CarRentalRequest, CarRentalRequest, AboutUs, Testimonial, Experience, ServicesSection, ServicesOffered
+
+
 
 def index(request):
-    vehicles = Vehicle.objects.all()
-    index_content = Index.objects.last()  
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        pickup_location = request.POST.get('pickup_location')
+        dropoff_location = request.POST.get('dropoff_location')
+        pickup_date = request.POST.get('pickup_date')
+        dropoff_date = request.POST.get('dropoff_date')
+        pickup_time = request.POST.get('pickup_time')
+
+        TripRequest.objects.create(
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            pickup_location=pickup_location,
+            dropoff_location=dropoff_location,
+            pickup_date=pickup_date,
+            dropoff_date=dropoff_date,
+            pickup_time=pickup_time
+        )
+
+        messages.success(request, 'Your trip request has been submitted!')
+        return redirect('index')
+
+    # Get admin-added cars
+    admin_vehicles = Vehicle.objects.all()
+    for v in admin_vehicles:
+        v.car_type = 'admin'
+
+    # Get user-added accepted rental cars
+    user_vehicles = CarRentalRequest.objects.filter(status='accepted')
+
+    for u in user_vehicles:
+        u.car_type = 'user'
+
+    # Combine both into one list
+    vehicles = list(chain(admin_vehicles, user_vehicles))
+
+    index_content = Index.objects.last()
     context = {
         'vehicles': vehicles,
         'index': index_content
     }
     return render(request, 'frontend/index.html', context)
+
+
+
 
 def about(request):
     about_content = AboutUs.objects.last()  
@@ -30,12 +72,51 @@ def blog(request):
 def blog_single(request):
     return render(request, 'frontend/blog-single.html')
 
-def car(request):
-    return render(request, 'frontend/car.html')
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from itertools import chain
 
-def car_single(request, id):
-    vehicle = get_object_or_404(Vehicle, id=id)
-    return render(request, 'frontend/car-single.html', {'vehicle': vehicle})
+from .models import Vehicle, CarRentalRequest, CarSpec, TripRequest, Index
+
+def car(request):
+    vehicles = Vehicle.objects.all()
+    accepted_rentals = CarRentalRequest.objects.filter(status='accepted')
+    return render(request, 'frontend/car.html', {
+        'vehicles': vehicles,
+        'accepted_rentals': accepted_rentals
+    })
+
+def car_single(request, car_type, id):
+    if car_type == 'admin':
+        vehicle = get_object_or_404(Vehicle, id=id)
+        related_cars = Vehicle.objects.filter(car_brand=vehicle.car_brand).exclude(id=vehicle.id)[:3]
+        return render(request, 'frontend/car-single.html', {
+            'vehicle': vehicle,
+            'is_admin_car': True,
+            'related_cars': related_cars,
+        })
+
+    elif car_type == 'user':
+        # fetch the rental request
+        rental = get_object_or_404(CarRentalRequest, id=id, status='accepted')
+
+        # try to grab its spec record, if any
+        try:
+            specs = rental.specs
+        except CarSpec.DoesNotExist:
+            specs = None
+
+        return render(request, 'frontend/car-single.html', {
+            'rental': rental,
+            'is_admin_car': False,
+            'specs': specs,           # pass the CarSpec object (or None)
+        })
+
+    else:
+        # invalid car_type
+        return redirect('index')
+
+
 
 def contact(request):
     return render(request, 'frontend/contact.html')
@@ -54,3 +135,82 @@ def services(request):
         'top_services': top_services
     }
     return render(request, 'frontend/services.html', context)
+
+#book a vehicle
+
+from .models import Vehicle, Booking
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+
+def book_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    if request.method == 'POST':
+        pickup = request.POST.get('pickup_date')
+        return_date = request.POST.get('return_date')
+        name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+
+        # Save booking
+        Booking.objects.create(
+            vehicle=vehicle,
+            full_name=name,
+            email=email,
+            phone=phone,
+            pickup_date=pickup,
+            return_date=return_date
+        )
+
+        messages.success(request, f'Booking confirmed for {vehicle.car_model} from {pickup} to {return_date}.')
+        return redirect('book_vehicle', vehicle_id=vehicle.id)
+
+    return render(request, 'frontend/booking/booking.html', {'vehicle': vehicle})
+
+#put your car on sent 
+from django.shortcuts import render, redirect
+from .models import CarRentalRequest, VehicleImage
+
+def put_car_on_rent(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        phone_number = request.POST.get('phone_number')
+        car_brand = request.POST.get('car_brand')
+        car_model = request.POST.get('car_model')
+        description = request.POST.get('description')
+        bluebook_image = request.FILES.get('bluebook_image')
+        vehicle_images = request.FILES.getlist('vehicle_images')
+
+        # Validate image count
+        if len(vehicle_images) > 10:
+            return render(request, 'frontend/put_on_rent/put_your_car_on_rent.html', {
+                'error': 'You can upload a maximum of 10 vehicle images.'
+            })
+
+        # Save the rental request
+        rental = CarRentalRequest.objects.create(
+            full_name=full_name,
+            phone_number=phone_number,
+            car_brand=car_brand,
+            car_model=car_model,
+            description=description,
+            bluebook_image=bluebook_image,
+        )
+
+        # Save each uploaded image
+        for image in vehicle_images:
+            VehicleImage.objects.create(rental_request=rental, image=image)
+
+        # Redirect to success page
+        return redirect('rent_success')  # define this URL/template separately
+
+    # If GET request, just show the form
+    return render(request, 'frontend/put_on_rent/put_your_car_on_rent.html')
+
+def rent_success(request):
+    return render(request, 'frontend/put_on_rent/success.html')  # make this template
+
+
+
+
+

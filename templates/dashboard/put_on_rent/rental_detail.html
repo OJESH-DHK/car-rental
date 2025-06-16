@@ -1,0 +1,69 @@
+{% extends 'dashboard/base/admin_base.html' %}
+
+{% block title %}Rental Request Details - {{ rental.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm rounded border-0">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">{{ rental.full_name }}</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" action="#">
+                {% csrf_token %}
+                <div class="row gy-3">
+                    <div class="col-12 col-md-6">
+                        <p><strong>Phone:</strong> <a href="tel:{{ rental.phone_number }}" class="text-decoration-none">{{ rental.phone_number }}</a></p>
+                        <p><strong>Car:</strong> {{ rental.car_brand }} {{ rental.car_model }}</p>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label fw-semibold">Status:</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="pending" {% if rental.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="accepted" {% if rental.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                                <option value="rejected" {% if rental.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                        </div>
+
+                        <p><strong>Submitted At:</strong> {{ rental.submitted_at|date:"F j, Y, g:i a" }}</p>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <p><strong>Description:</strong></p>
+                        <p class="text-break">{{ rental.description|linebreaksbr }}</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h5 class="mb-3">Bluebook Image</h5>
+                {% if rental.bluebook_image %}
+                    <div class="text-center mb-4">
+                        <img src="{{ rental.bluebook_image.url }}" alt="Bluebook" class="img-fluid rounded shadow" style="max-height: 350px; object-fit: contain;">
+                    </div>
+                {% else %}
+                    <p class="text-muted fst-italic">No Bluebook Image available.</p>
+                {% endif %}
+
+                <h5 class="mb-3">Vehicle Images</h5>
+                <div class="row g-3 mb-4 justify-content-center">
+                    {% if rental.images.all %}
+                        {% for img in rental.images.all %}
+                            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                <img src="{{ img.image.url }}" alt="Vehicle Image" class="img-fluid rounded shadow" style="height: 150px; width: 100%; object-fit: cover;">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted fst-italic text-center">No Vehicle Images available.</p>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'admin_rental_requests' %}" class="btn btn-outline-secondary">← Back</a>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

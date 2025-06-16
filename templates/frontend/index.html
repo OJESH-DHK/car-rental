@@ -5,111 +5,127 @@
 
 {% block content %}
 
-<div class="hero-wrap ftco-degree-bg" style="background-image: url('{{ index.image.url }}')" data-stellar-background-ratio="0.5">
+<!-- Hero Section -->
+<div class="hero-wrap ftco-degree-bg" style="background-image: url('{{ index.image.url }}');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
-  <div class="container">
-    <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
-      <div class="col-lg-8 ftco-animate">
-        <div class="text w-100 text-center mb-md-5 pb-md-5">
-          <h1 class="mb-4">{{ index.title }}</h1>
+  <div class="container h-100 d-flex align-items-center">
+    <div class="row w-100 align-items-center flex-column flex-lg-row">
 
-          <!-- Video Link with icon and text -->
-          {% if index.video_link %}
-          <a href="{{ index.video_link }}" class="popup-vimeo d-flex align-items-center justify-content-center text-decoration-none mb-3">
-            <div class="icon d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px; background: #fff; border-radius: 50%;">
-              <span class="ion-ios-play" style="font-size: 24px; color: red;"></span>
-            </div>
-            <div class="heading-title">
-              <span style="font-size: 18px; color: white;">{{ index.video_title }}</span>
-            </div>
-          </a>
-          {% endif %}
+      <!-- Form Column (Left) -->
+      <div class="col-lg-5 w-100 px-3 mb-4 mb-lg-0">
+        <form action="{% url 'index' %}" method="POST" class="request-form ftco-animate bg-primary p-4 rounded shadow-lg" style="max-width: 100%;">
+          {% csrf_token %}
+          <h2 class="text-white mb-4 text-center">Make Your Trip</h2>
 
-          <p style="font-size: 18px; color: white;">
-            {{ index.description }}
-          </p>
-        </div>
+          <div class="d-flex gap-2 mb-3 flex-column flex-md-row">
+            <div class="flex-fill">
+              <label class="label text-white" for="full_name">Full Name</label>
+              <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name" required>
+            </div>
+            <div class="flex-fill">
+              <label class="label text-white" for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Your email" required>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="label text-white" for="phone">Phone Number</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="98XXXXXXXX" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="label text-white" for="pickup_location">Pick-up Location</label>
+            <input type="text" class="form-control" id="pickup_location" name="pickup_location" placeholder="City, Airport, Station, etc" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="label text-white" for="dropoff_location">Drop-off Location</label>
+            <input type="text" class="form-control" id="dropoff_location" name="dropoff_location" placeholder="City, Airport, Station, etc" required>
+          </div>
+
+          <div class="d-flex gap-3 mb-3 flex-column flex-md-row">
+            <div class="flex-fill">
+              <label class="label text-white" for="pickup_date">Pick-up Date</label>
+              <input type="date" class="form-control" id="pickup_date" name="pickup_date" required>
+            </div>
+            <div class="flex-fill">
+              <label class="label text-white" for="dropoff_date">Drop-off Date</label>
+              <input type="date" class="form-control" id="dropoff_date" name="dropoff_date" required>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="label text-white" for="pickup_time">Pick-up Time</label>
+            <input type="time" class="form-control" id="pickup_time" name="pickup_time" required>
+          </div>
+
+          <div class="text-center">
+            <input type="submit" value="Rent A Car Now" class="btn btn-secondary py-3 px-5 fw-bold shadow-sm" style="font-size: 18px;">
+          </div>
+        </form>
       </div>
+
+      <!-- Hero Text Column (Right) -->
+      <div class="col-lg-7 text-white text-center text-lg-start ftco-animate w-100 px-3">
+        <h1 class="mb-4 display-4 fw-bold" style="text-shadow: 2px 2px 8px rgba(127, 56, 56, 0.7);">
+          {{ index.title }}
+        </h1>
+
+        {% if index.video_link %}
+        <a href="{{ index.video_link }}" class="popup-vimeo d-flex align-items-center justify-content-start text-decoration-none mb-3" style="max-width: 220px;">
+          <div class="icon d-flex align-items-center justify-content-center me-2 rounded-circle bg-white" style="width: 50px; height: 50px;">
+            <span class="ion-ios-play" style="font-size: 24px; color: red;"></span>
+          </div>
+          <div class="heading-title">
+            <span style="font-size: 18px; color: white;">{{ index.video_title }}</span>
+          </div>
+        </a>
+        {% endif %}
+
+        <p class="lead" style="font-size: 20px; max-width: 700px; text-shadow: 1px 1px 5px rgba(0,0,0,0.6);">
+          {{ index.description }}
+        </p>
+      </div>
+
     </div>
   </div>
 </div>
 
-
-
-
-<section class="ftco-section ftco-no-pt bg-light">
-  <div class="container">
-    <div class="row no-gutters">
-      <div class="col-md-12 featured-top">
-        <div class="row no-gutters">
-          <div class="col-md-4 d-flex align-items-center">
-            <form action="#" class="request-form ftco-animate bg-primary">
-              <h2>Make your trip</h2>
-              <div class="form-group">
-                <label for="" class="label">Pick-up location</label>
-                <input type="text" class="form-control" placeholder="City, Airport, Station, etc">
-              </div>
-              <div class="form-group">
-                <label for="" class="label">Drop-off location</label>
-                <input type="text" class="form-control" placeholder="City, Airport, Station, etc">
-              </div>
-              <div class="d-flex">
-                <div class="form-group mr-2">
-                  <label for="" class="label">Pick-up date</label>
-                  <input type="text" class="form-control" id="book_pick_date" placeholder="Date">
-                </div>
-                <div class="form-group ml-2">
-                  <label for="" class="label">Drop-off date</label>
-                  <input type="text" class="form-control" id="book_off_date" placeholder="Date">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="" class="label">Pick-up time</label>
-                <input type="text" class="form-control" id="time_pick" placeholder="Time">
-              </div>
-              <div class="form-group">
-                <input type="submit" value="Rent A Car Now" class="btn btn-secondary py-3 px-4">
-              </div>
-            </form>
+<!-- Services Section -->
+<div class="col-md-8 d-flex align-items-center mx-auto my-5">
+  <div class="services-wrap rounded-right w-100 text-center">
+    <h3 class="heading-section mb-4">Better Way to Rent Your Perfect Cars</h3>
+    <div class="row d-flex mb-4 justify-content-center">
+      <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+        <div class="services w-100 text-center">
+          <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
+          <div class="text w-100">
+            <h3 class="heading mb-2">Choose Your Pickup Location</h3>
           </div>
-          <div class="col-md-8 d-flex align-items-center">
-            <div class="services-wrap rounded-right w-100">
-              <h3 class="heading-section mb-4">Better Way to Rent Your Perfect Cars</h3>
-              <div class="row d-flex mb-4">
-                <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                  <div class="services w-100 text-center">
-                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
-                    <div class="text w-100">
-                      <h3 class="heading mb-2">Choose Your Pickup Location</h3>
-                    </div>
-                  </div>      
-                </div>
-                <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                  <div class="services w-100 text-center">
-                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
-                    <div class="text w-100">
-                      <h3 class="heading mb-2">Select the Best Deal</h3>
-                    </div>
-                  </div>      
-                </div>
-                <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                  <div class="services w-100 text-center">
-                    <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
-                    <div class="text w-100">
-                      <h3 class="heading mb-2">Reserve Your Rental Car</h3>
-                    </div>
-                  </div>      
-                </div>
-              </div>
-              <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
-            </div>
+        </div>      
+      </div>
+      <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+        <div class="services w-100 text-center">
+          <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
+          <div class="text w-100">
+            <h3 class="heading mb-2">Select the Best Deal</h3>
           </div>
-        </div>
+        </div>      
+      </div>
+      <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+        <div class="services w-100 text-center">
+          <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
+          <div class="text w-100">
+            <h3 class="heading mb-2">Reserve Your Rental Car</h3>
+          </div>
+        </div>      
       </div>
     </div>
+    <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
   </div>
-</section>
+</div>
 
+<!-- Featured Vehicles Section -->
 <section class="ftco-section ftco-no-pt bg-light">
   <div class="container">
     <div class="row justify-content-center">
@@ -121,37 +137,49 @@
     <div class="row">
       <div class="col-md-12">
         <div class="carousel-car owl-carousel">
-
           {% for vehicle in vehicles %}
           <div class="item">
             <div class="car-wrap rounded ftco-animate">
-              <div class="img rounded d-flex align-items-end" 
-                   style="background-image: url('{{ vehicle.image.url }}');">
-              </div>
+
+              {% if vehicle.car_type == 'admin' and vehicle.image %}
+                <div class="img rounded d-flex align-items-end" style="background-image: url('{{ vehicle.image.url }}');"></div>
+              {% elif vehicle.car_type == 'user' and vehicle.images.all %}
+                <div class="img rounded d-flex align-items-end" style="background-image: url('{{ vehicle.images.first.image.url }}');"></div>
+              {% else %}
+                <div class="img rounded d-flex align-items-end" style="background-color: #ddd;"></div>
+              {% endif %}
+
               <div class="text">
                 <h2 class="mb-0"><a href="#">{{ vehicle.car_model }}</a></h2>
                 <div class="d-flex mb-3">
                   <span class="cat">{{ vehicle.car_brand }}</span>
-                  <p class="price ml-auto">${{ vehicle.price_per_day }} <span>/day</span></p>
+                  {% if vehicle.car_type == 'admin' and vehicle.price_per_day %}
+                    <p class="price ml-auto">रु {{ vehicle.price_per_day }} <span>/day</span></p>
+                  {% elif vehicle.car_type == 'user' %}
+                    <p class="price ml-auto text-muted">User Submission</p>
+                  {% endif %}
                 </div>
                 <p class="d-flex mb-0 d-block">
-                  <a href="#" class="btn btn-primary py-2 mr-1">Book now</a> 
-                  <a href="{% url 'car_single' vehicle.id %}" class="btn btn-secondary py-2 ml-1">Details</a>
+                  {% if vehicle.car_type == 'admin' %}
+                    <a href="{% url 'book_vehicle' vehicle.id %}" class="btn btn-primary py-2 mr-1">Book now</a>
+                  {% endif %}
+                  <a href="{% url 'car_single' vehicle.car_type vehicle.id %}" class="btn btn-secondary py-2 ml-1">Details</a>
                 </p>
               </div>
             </div>
           </div>
           {% empty %}
-          <p>No vehicles found.</p>
+            <p>No vehicles found.</p>
           {% endfor %}
-
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Video Popup Dependencies (You can also put these in your base.html) -->
+
+
+<!-- Video Popup Dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
@@ -165,3 +193,52 @@
 </script>
 
 {% endblock %}
+
+<style>
+  .hero-wrap {
+    min-height: 100vh;
+    position: relative;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+
+  .hero-wrap .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+  }
+
+  .request-form {
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .request-form .form-control {
+    border-radius: 0.25rem;
+  }
+
+  @media (max-width: 991px) {
+    .hero-wrap {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+
+    .request-form {
+      margin-bottom: 30px !important;
+    }
+
+    .hero-wrap h1 {
+      font-size: 2rem;
+    }
+
+    .hero-wrap p.lead {
+      font-size: 1rem;
+    }
+
+    .popup-vimeo .heading-title span {
+      font-size: 16px !important;
+    }
+  }
+</style>

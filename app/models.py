@@ -1,7 +1,6 @@
 from django.db import models
-
-# Create your models here.
 from django.db import models
+
 class Feature(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -44,16 +43,17 @@ class Index(models.Model):
 
 
 class TripRequest(models.Model):
-    pickup_location = models.CharField(max_length=200)
-    dropoff_location = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    pickup_location = models.CharField(max_length=100)
+    dropoff_location = models.CharField(max_length=100)
     pickup_date = models.DateField()
     dropoff_date = models.DateField()
     pickup_time = models.TimeField()
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
-        return f"{self.pickup_location} to {self.dropoff_location} on {self.pickup_date}"
+        return f"{self.full_name} - {self.phone}"
+
 
 
 class AboutUs(models.Model):
@@ -101,6 +101,60 @@ class ServicesOffered(models.Model):
     services_offered_desc = models.CharField(max_length=100, null=True)
     def __str__(self):
         return "Services offered"
+    
+#Booking 
+class Booking(models.Model):
+    vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='bookings')
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    pickup_date = models.DateField()
+    return_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.vehicle.car_model}"
+
+
+class CarRentalRequest(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+
+    full_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15)
+    car_brand = models.CharField(max_length=100)
+    car_model = models.CharField(max_length=100)
+    description = models.TextField()
+    bluebook_image = models.ImageField(upload_to='bluebooks/')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.car_model} [{self.status}]"
+
+
+class CarSpec(models.Model):
+    rental = models.OneToOneField(CarRentalRequest, on_delete=models.CASCADE, related_name='specs')
+    price_per_day = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    mileage = models.PositiveIntegerField(blank=True, null=True)
+    transmission = models.CharField(max_length=50, blank=True, null=True, choices=[
+        ('manual', 'Manual'),
+        ('automatic', 'Automatic'),
+    ])
+    seats = models.PositiveIntegerField(blank=True, null=True)
+    luggage_capacity = models.PositiveIntegerField(blank=True, null=True, help_text="Luggage capacity in liters")
+
+    def __str__(self):
+        return f"Specs for {self.rental}"
+
+
+class VehicleImage(models.Model):
+    rental_request = models.ForeignKey(CarRentalRequest, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='vehicle_images/')
+
 
 
 

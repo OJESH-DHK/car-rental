@@ -11,7 +11,7 @@ admin.site.register(AboutUs)
 admin.site.register(Testimonial)
 admin.site.register(Experience)
 admin.site.register(ServicesSection)
-admin.site.register(ServicesOffered)  # This was missing 'site.' before
+admin.site.register(ServicesOffered)
 admin.site.register(Booking)
 @admin.register(VehicleImage)
 class VehicleImageAdmin(admin.ModelAdmin):

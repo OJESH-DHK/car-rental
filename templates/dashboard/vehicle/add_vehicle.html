@@ -1,57 +1,121 @@
-{% extends "dashboard/base/admin_base.html" %}
-{% block title %}Add Vehicle{% endblock %}
+{% extends 'dashboard/base/admin_base.html' %}
+{% load static %}
+
+{% block title %}Add New Vehicle | Admin Dashboard{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Add New Vehicle</h2>
-    <form method="POST" enctype="multipart/form-data" class="mt-4">
-        {% csrf_token %}
-
-        <div class="mb-3">
-            <label>Car Brand</label>
-            <input type="text" name="car_brand" class="form-control" required>
+<div class="container-fluid mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Add New Vehicle</h4>
         </div>
+        <div class="card-body">
 
-        <div class="mb-3">
-            <label>Car Model</label>
-            <input type="text" name="car_model" class="form-control" required>
+          {% if error %}
+            <div class="alert alert-danger text-center">{{ error }}</div>
+          {% endif %}
+
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Car Brand</label>
+                <input type="text" name="car_brand" class="form-control" placeholder="e.g., Toyota" required>
+              </div>
+              <div class="col-md-6">
+                <label>Car Model</label>
+                <input type="text" name="car_model" class="form-control" placeholder="e.g., Corolla 2022" required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label>Price per Day</label>
+                <input type="number" step="0.01" name="price_per_day" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label>Transmission</label>
+                <select name="transmission" class="form-control" required>
+                  <option value="">Select Transmission</option>
+                  <option value="manual">Manual</option>
+                  <option value="automatic">Automatic</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label>Seats</label>
+                <input type="number" name="seats" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label>Mileage (km)</label>
+                <input type="number" name="mileage" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label>Luggage Capacity (liters)</label>
+                <input type="number" name="luggage_capacity" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label>Main Vehicle Image</label>
+              <input type="file" name="image" class="form-control" accept="image/*" required>
+            </div>
+
+            <div class="mb-3">
+              <label>Additional Vehicle Images (Max 10)</label>
+              <input type="file" id="vehicle_images" name="additional_images" class="form-control" accept="image/*" multiple>
+              <small class="text-muted">Hold Ctrl/Command to select multiple images.</small>
+              <div id="imagePreview" class="row mt-3"></div>
+            </div>
+
+            <div class="text-end">
+              <button type="submit" class="btn btn-success">Add Vehicle</button>
+            </div>
+
+          </form>
         </div>
-
-        <div class="mb-3">
-            <label>Price per Day (Rs)</label>
-            <input type="number" name="price_per_day" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Transmission</label>
-            <select name="transmission" class="form-control" required>
-                <option value="manual">Manual</option>
-                <option value="automatic">Automatic</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Seats</label>
-            <input type="number" name="seats" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Mileage (km)</label>
-            <input type="number" name="mileage" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Luggage Capacity (L)</label>
-            <input type="number" name="luggage_capacity" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Image</label>
-            <input type="file" name="image" class="form-control">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Vehicle</button>
-        <a href="{% url 'admin_vehicles' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Image Preview Script -->
+<script>
+  const imageInput = document.getElementById('vehicle_images');
+  const previewArea = document.getElementById('imagePreview');
+
+  imageInput.addEventListener('change', function () {
+    previewArea.innerHTML = '';
+    const files = Array.from(this.files);
+
+    if (files.length > 10) {
+      alert("You can upload a maximum of 10 images.");
+      imageInput.value = '';
+      return;
+    }
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const col = document.createElement('div');
+        col.className = 'col-md-3 mb-2';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'img-thumbnail';
+        img.style.height = '150px';
+        img.style.objectFit = 'cover';
+
+        col.appendChild(img);
+        previewArea.appendChild(col);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
 {% endblock %}

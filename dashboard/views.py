@@ -3,6 +3,8 @@ from app.models import (
     Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
     ServicesSection, ServicesOffered
 )
+from app.models import Vehicle, VehicleImage
+
 from app.models import AboutUs, Vehicle
 from django.contrib import messages
 
@@ -128,31 +130,45 @@ def ad_vehicle(request):
     vehicles = Vehicle.objects.all()
     return render(request, 'dashboard/vehicle/ad_vehicle.html', {'vehicles': vehicles})
 
+
+
+
+
 def admin_add_vehicle(request):
     if request.method == 'POST':
-        car_brand = request.POST.get('car_brand')
-        car_model = request.POST.get('car_model')
-        price_per_day = request.POST.get('price_per_day')
-        transmission = request.POST.get('transmission')
-        seats = request.POST.get('seats')
-        mileage = request.POST.get('mileage')
-        luggage_capacity = request.POST.get('luggage_capacity')
-        image = request.FILES.get('image')
+        try:
+            # Basic validation
+            if len(request.FILES.getlist('vehicle_images')) > 10:
+                messages.error(request, "You can upload a maximum of 10 vehicle images.")
+                return redirect('admin_add_vehicle')  # Adjust this name to your actual URL name
 
-        Vehicle.objects.create(
-            car_brand=car_brand,
-            car_model=car_model,
-            price_per_day=price_per_day,
-            transmission=transmission,
-            seats=seats,
-            mileage=mileage,
-            luggage_capacity=luggage_capacity,
-            image=image
-        )
+            # Create the Vehicle object
+            vehicle = Vehicle.objects.create(
+                car_brand=request.POST.get('car_brand'),
+                car_model=request.POST.get('car_model'),
+                price_per_day=request.POST.get('price_per_day'),
+                transmission=request.POST.get('transmission'),
+                seats=request.POST.get('seats'),
+                mileage=request.POST.get('mileage') or 0,
+                luggage_capacity=request.POST.get('luggage_capacity') or 0,
+                image=request.FILES.get('image')  # Main image
+            )
 
-        return redirect('admin_vehicles')
-    
+            # Handle multiple vehicle images
+            for image in request.FILES.getlist('vehicle_images'):
+                VehicleImage.objects.create(vehicle=vehicle, image=image)
+
+            messages.success(request, "Vehicle added successfully!")
+            return redirect('admin_vehicles')  # Redirect to the vehicle list page
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('admin_add_vehicle')
+
     return render(request, 'dashboard/vehicle/add_vehicle.html')
+
+
+
 
 from app.models import CarRentalRequest
 
@@ -162,6 +178,13 @@ def admin_rental_requests_view(request):
 
 def admin_rental_detail(request, id):
     rental = get_object_or_404(CarRentalRequest, id=id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        rental.status = new_status
+        rental.save()
+        return redirect('admin_rental_requests')  # or the same page: redirect('admin_rental_detail', id=id)
+
     context = {
         'rental': rental,
     }

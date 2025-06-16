@@ -26,6 +26,11 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return f"{self.car_brand} {self.car_model}"
+
+# to handle multiple admin added images
+class VehicleImage(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='vehicle_images/')
     
 class Index(models.Model):
     title = models.CharField(max_length=200)
@@ -97,7 +102,7 @@ class ServicesSection(models.Model):
         return "Services Section"
         
 class ServicesOffered(models.Model):
-    services_offered = models.CharField(max_length=100)
+    services_offered = models.CharField(max_length=100, null=True, blank=True)
     services_offered_desc = models.CharField(max_length=100, null=True)
     def __str__(self):
         return "Services offered"

@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Book User Vehicle | Carbook{% endblock %}
+
+{% block content %}
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{{ image.image.url }}');" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs">
+          <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
+          <span>{{ rental.car_brand }} {{ rental.car_model }} <i class="ion-ios-arrow-forward"></i></span>
+        </p>
+        <h1 class="mb-3 bread">{{ rental.car_brand }} - {{ rental.car_model }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<section class="ftco-section ftco-car-details">
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-10 text-center ftco-animate">
+        <h2 class="mb-3">{{ rental.car_brand }} - {{ rental.car_model }}</h2>
+        {% if image %}
+        <img src="{{ image.image.url }}" class="img-fluid rounded mb-4" alt="Vehicle Image" style="max-height: 400px;">
+        {% endif %}
+        {% if specs %}
+        <p class="price text-primary h4">रु {{ specs.price_per_day }} <small>/ day</small></p>
+        {% else %}
+        <p class="price text-muted h4">No pricing info available</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 ftco-animate">
+        <div class="card p-4 shadow-sm border-0">
+          <h4 class="mb-4 text-center">Book this vehicle</h4>
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+              <label for="pickup_date">Pick-Up Date</label>
+              <input type="date" name="pickup_date" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="return_date">Return Date</label>
+              <input type="date" name="return_date" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="full_name">Full Name</label>
+              <input type="text" name="full_name" class="form-control" placeholder="Your full name" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="email">Email</label>
+              <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group mb-4">
+              <label for="phone">Phone</label>
+              <input type="tel" name="phone" class="form-control" placeholder="98XXXXXXXX" required>
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary px-5 py-2">Confirm Booking</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

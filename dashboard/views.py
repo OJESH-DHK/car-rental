@@ -7,8 +7,10 @@ from app.models import (
 )
 from app.models import Vehicle, VehicleImage
 from .forms import ContactDetailForm
+from app.models import Index
 from app.models import AboutUs, Vehicle
 from django.contrib import messages
+from app.models import CarRentalRequest, CarSpec
 
 # Create your views here.
 def dashboard(request):
@@ -214,5 +216,62 @@ def admin_contact_detail_edit(request):
 def admin_contact_messages(request):
     messages = ContactMessage.objects.all().order_by('-created_at')
     return render(request, 'dashboard/admin_contact_messages.html', {'messages': messages})
+
+def ad_index(request):
+    items = Index.objects.all()
+    return render(request, 'dashboard/index/ad_index.html', {'index_items': items})
+
+def edit_index_image(request, id):
+    index = get_object_or_404(Index, id=id)
+
+    if request.method == 'POST':
+        if request.FILES.get('image'):
+            index.image = request.FILES['image']
+            index.save()
+        return redirect('ad_index')  # Replace with your actual list view name
+
+    return render(request, 'dashboard/index/edit_index_image.html', {'index': index})
+
+
+
+def admin_rental_specs(request, id):
+    rental = get_object_or_404(CarRentalRequest, id=id)
+    specs = getattr(rental, 'specs', None)
+
+    if request.method == 'POST':
+        price_per_day = request.POST.get('price_per_day') or None
+        mileage = request.POST.get('mileage') or None
+        transmission = request.POST.get('transmission') or None
+        seats = request.POST.get('seats') or None
+        luggage_capacity = request.POST.get('luggage_capacity') or None
+
+        if specs:
+            # Update existing specs
+            specs.price_per_day = price_per_day
+            specs.mileage = mileage
+            specs.transmission = transmission
+            specs.seats = seats
+            specs.luggage_capacity = luggage_capacity
+            specs.save()
+        else:
+            # Create new specs
+            specs = CarSpec.objects.create(
+                rental=rental,
+                price_per_day=price_per_day,
+                mileage=mileage,
+                transmission=transmission,
+                seats=seats,
+                luggage_capacity=luggage_capacity,
+            )
+        return redirect('admin_rental_requests')
+
+    return render(request, 'dashboard/put_on_rent/specs.html', {
+        'rental': rental,
+        'specs': specs,
+    })
+
+
+
+
 
 

@@ -19,6 +19,10 @@ urlpatterns = [
     path('admin/contact-details/', views.admin_contact_details, name='admin_contact_details'),
     path('admin/contact-detail/edit/', views.admin_contact_detail_edit, name='admin_contact_detail_edit'),
     path('admin/contact-messages/', views.admin_contact_messages, name='admin_contact_messages'),
+    path('ad_index/', views.ad_index, name='ad_index'),
+    path('admin/index/edit-image/<int:id>/', views.edit_index_image, name='edit_index_image'),
+    path('admin/rental/specs/<int:id>/', views.admin_rental_specs, name='admin_rental_specs'),
+
 
 
 

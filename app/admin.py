@@ -17,6 +17,7 @@ admin.site.register(Experience)
 admin.site.register(ServicesSection)
 admin.site.register(ServicesOffered)
 admin.site.register(Booking)
+admin.site.register(UserRentalBooking)
 @admin.register(VehicleImage)
 class VehicleImageAdmin(admin.ModelAdmin):
     list_display = ('rental_request', 'image_tag')

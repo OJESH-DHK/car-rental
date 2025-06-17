@@ -6,31 +6,39 @@
 <div class="container my-5">
     <div class="card shadow-sm rounded border-0">
         <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">{{ rental.full_name }}</h3>
+            <h3 class="mb-0">Edit Rental Request: {{ rental.full_name }}</h3>
         </div>
         <div class="card-body">
-            <form method="post" action="#">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row gy-3">
+
                     <div class="col-12 col-md-6">
-                        <p><strong>Phone:</strong> <a href="tel:{{ rental.phone_number }}" class="text-decoration-none">{{ rental.phone_number }}</a></p>
-                        <p><strong>Car:</strong> {{ rental.car_brand }} {{ rental.car_model }}</p>
+                        <label for="full_name" class="form-label fw-semibold">Full Name:</label>
+                        <input type="text" id="full_name" name="full_name" class="form-control" value="{{ rental.full_name }}" required>
 
-                        <div class="mb-3">
-                            <label for="status" class="form-label fw-semibold">Status:</label>
-                            <select name="status" id="status" class="form-select">
-                                <option value="pending" {% if rental.status == 'pending' %}selected{% endif %}>Pending</option>
-                                <option value="accepted" {% if rental.status == 'accepted' %}selected{% endif %}>Accepted</option>
-                                <option value="rejected" {% if rental.status == 'rejected' %}selected{% endif %}>Rejected</option>
-                            </select>
-                        </div>
+                        <label for="phone_number" class="form-label fw-semibold mt-3">Phone Number:</label>
+                        <input type="tel" id="phone_number" name="phone_number" class="form-control" value="{{ rental.phone_number }}" required>
 
-                        <p><strong>Submitted At:</strong> {{ rental.submitted_at|date:"F j, Y, g:i a" }}</p>
+                        <label for="car_brand" class="form-label fw-semibold mt-3">Car Brand:</label>
+                        <input type="text" id="car_brand" name="car_brand" class="form-control" value="{{ rental.car_brand }}" required>
+
+                        <label for="car_model" class="form-label fw-semibold mt-3">Car Model:</label>
+                        <input type="text" id="car_model" name="car_model" class="form-control" value="{{ rental.car_model }}" required>
+
+                        <label for="status" class="form-label fw-semibold mt-3">Status:</label>
+                        <select name="status" id="status" class="form-select" required>
+                            <option value="pending" {% if rental.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="accepted" {% if rental.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                            <option value="rejected" {% if rental.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+
+                        <p class="mt-3"><strong>Submitted At:</strong> {{ rental.submitted_at|date:"F j, Y, g:i a" }}</p>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <p><strong>Description:</strong></p>
-                        <p class="text-break">{{ rental.description|linebreaksbr }}</p>
+                        <label for="description" class="form-label fw-semibold">Description:</label>
+                        <textarea id="description" name="description" rows="8" class="form-control" required>{{ rental.description }}</textarea>
                     </div>
                 </div>
 
@@ -44,6 +52,8 @@
                 {% else %}
                     <p class="text-muted fst-italic">No Bluebook Image available.</p>
                 {% endif %}
+                <label for="bluebook_image" class="form-label fw-semibold">Upload New Bluebook Image</label>
+                <input type="file" id="bluebook_image" name="bluebook_image" class="form-control mb-4">
 
                 <h5 class="mb-3">Vehicle Images</h5>
                 <div class="row g-3 mb-4 justify-content-center">

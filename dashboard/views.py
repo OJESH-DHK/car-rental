@@ -165,7 +165,6 @@ def delete_vehicle(request, id):
     vehicle.delete()
     messages.success(request, "Vehicle deleted successfully.")
     return redirect('admin_vehicles')  # Make sure this name matches your URL
-
 def edit_vehicle(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
@@ -177,6 +176,7 @@ def edit_vehicle(request, vehicle_id):
         vehicle.seats = request.POST.get('seats')
         vehicle.mileage = request.POST.get('mileage')
         vehicle.luggage_capacity = request.POST.get('luggage_capacity')
+        vehicle.description = request.POST.get('description')  # NEW
 
         if 'image' in request.FILES:
             vehicle.image = request.FILES['image']
@@ -191,15 +191,17 @@ def edit_vehicle(request, vehicle_id):
 
 
 
+
+
 def admin_add_vehicle(request):
     if request.method == 'POST':
         try:
-            # Basic validation
+            # Check multiple images count
             if len(request.FILES.getlist('vehicle_images')) > 10:
                 messages.error(request, "You can upload a maximum of 10 vehicle images.")
-                return redirect('admin_add_vehicle')  # Adjust this name to your actual URL name
+                return redirect('admin_add_vehicle')  # Adjust if your URL name differs
 
-            # Create the Vehicle object
+            # Create the vehicle instance with description
             vehicle = Vehicle.objects.create(
                 car_brand=request.POST.get('car_brand'),
                 car_model=request.POST.get('car_model'),
@@ -208,21 +210,23 @@ def admin_add_vehicle(request):
                 seats=request.POST.get('seats'),
                 mileage=request.POST.get('mileage') or 0,
                 luggage_capacity=request.POST.get('luggage_capacity') or 0,
+                description=request.POST.get('description'),
                 image=request.FILES.get('image')  # Main image
             )
 
-            # Handle multiple vehicle images
+            # Save additional images
             for image in request.FILES.getlist('vehicle_images'):
                 VehicleImage.objects.create(vehicle=vehicle, image=image)
 
             messages.success(request, "Vehicle added successfully!")
-            return redirect('admin_vehicles')  # Redirect to the vehicle list page
+            return redirect('admin_vehicles')
 
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
             return redirect('admin_add_vehicle')
 
     return render(request, 'dashboard/vehicle/add_vehicle.html')
+
 
 
 
@@ -237,10 +241,22 @@ def admin_rental_detail(request, id):
     rental = get_object_or_404(CarRentalRequest, id=id)
 
     if request.method == 'POST':
-        new_status = request.POST.get('status')
-        rental.status = new_status
+        # Update all editable fields from POST data
+        rental.full_name = request.POST.get('full_name', rental.full_name)
+        rental.phone_number = request.POST.get('phone_number', rental.phone_number)
+        rental.car_brand = request.POST.get('car_brand', rental.car_brand)
+        rental.car_model = request.POST.get('car_model', rental.car_model)
+        rental.description = request.POST.get('description', rental.description)
+        rental.status = request.POST.get('status', rental.status)
+
+        # For images, normally you handle file uploads separately, 
+        # but if you want to handle bluebook_image here:
+        if 'bluebook_image' in request.FILES:
+            rental.bluebook_image = request.FILES['bluebook_image']
+
         rental.save()
-        return redirect('admin_rental_requests')  # or the same page: redirect('admin_rental_detail', id=id)
+        messages.success(request, "Rental request updated successfully.")
+        return redirect('admin_rental_requests')  # or redirect back to detail page if preferred
 
     context = {
         'rental': rental,

@@ -29,6 +29,7 @@
                 <th>Seats</th>
                 <th>Mileage</th>
                 <th>Luggage</th>
+                <th>Description</th> <!-- Added description header -->
                 <th>Actions</th>
             </tr>
         </thead>
@@ -50,6 +51,7 @@
                 <td>{{ vehicle.seats }}</td>
                 <td>{{ vehicle.mileage }} km</td>
                 <td>{{ vehicle.luggage_capacity }} L</td>
+                <td>{{ vehicle.description }}</td> <!-- Show description -->
                 <td>
                     <a href="{% url 'edit_vehicle' vehicle.id %}" class="btn btn-sm btn-primary">Edit</a>
                     <a href="{% url 'delete_vehicle' vehicle.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this vehicle?')">Delete</a>
@@ -57,7 +59,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="10" class="text-center">No vehicles found.</td>
+                <td colspan="11" class="text-center">No vehicles found.</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -1,6 +1,6 @@
-# forms.py
 from django import forms
-from app.models import ContactDetail
+from app.models import ContactDetail, Blog
+
 
 class ContactDetailForm(forms.ModelForm):
     class Meta:
@@ -14,3 +14,10 @@ class ContactDetailForm(forms.ModelForm):
             'instagram': forms.URLInput(attrs={'class': 'form-control'}),
             'twitter': forms.URLInput(attrs={'class': 'form-control'}),
         }
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = [
+            'title', 'content', 'image'
+        ]

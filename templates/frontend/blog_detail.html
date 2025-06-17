@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ blog.title }} | Carbook{% endblock %}
+
+{% block content %}
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static "images/bg_3.jpg" %}');" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs">
+          <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
+          <span class="mr-2"><a href="{% url 'blog_list' %}">Blog <i class="ion-ios-arrow-forward"></i></a></span>
+          <span>{{ blog.title }} <i class="ion-ios-arrow-forward"></i></span>
+        </p>
+        <h1 class="mb-3 bread">{{ blog.title }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section ftco-degree-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 ftco-animate">
+        <h2 class="mb-3">{{ blog.title }}</h2>
+
+        <div class="meta mb-3">
+          <span><i class="icon-calendar"></i> {{ blog.published_date|date:"M d, Y" }}</span> &nbsp;|&nbsp;
+          <span><i class="icon-person"></i> {{ blog.author.username }}</span>
+        </div>
+
+        <p>
+          <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid">
+        </p>
+        <p>{{ blog.content|safe }}</p>
+      </div>
+
+      <div class="col-md-4 sidebar ftco-animate">
+        {% if recent_blogs %}
+        <div class="sidebar-box ftco-animate">
+          <h3>Recent Blogs</h3>
+          {% for recent_blog in recent_blogs %}
+          <div class="block-21 mb-4 d-flex">
+            <a class="blog-img mr-4" style="background-image: url('{{ recent_blog.image.url }}');"></a>
+            <div class="text">
+              <h3 class="heading"><a href="{% url 'blog_detail' recent_blog.slug %}">{{ recent_blog.title }}</a></h3>
+              <div class="meta">
+                <div><span class="icon-calendar"></span> {{ recent_blog.published_date|date:"M d, Y" }}</a></div>
+                <div><span class="icon-person"></span> {{ recent_blog.author.username }}</a></div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

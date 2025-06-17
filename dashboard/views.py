@@ -3,10 +3,11 @@ from django.urls import reverse
 from django.contrib import messages
 from app.models import (
     Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
-    ServicesSection, ServicesOffered, CarRentalRequest, ContactDetail, ContactMessage
+    ServicesSection, ServicesOffered, CarRentalRequest, ContactDetail, ContactMessage,
+    Blog
 )
 from app.models import Vehicle, VehicleImage
-from .forms import ContactDetailForm
+from .forms import ContactDetailForm, BlogForm
 from app.models import Index
 from app.models import AboutUs, Vehicle
 from django.contrib import messages
@@ -270,8 +271,56 @@ def admin_rental_specs(request, id):
         'specs': specs,
     })
 
+def ad_viewblog(request):
+    blogs = Blog.objects.all().order_by('-published_date')
+    return render(request, 'dashboard/blog/ad_viewblog.html', {'blogs': blogs})
+
+def ad_addblog(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid():
+            blog = form.save(commit=False)
+            blog.author = request.user  # or assign author appropriately
+            blog.save()
+            messages.success(request, "Blog created successfully.")
+            return redirect('ad_viewblog')
+    else:
+        form = BlogForm()
+
+    context = {
+        'form': form,
+        'page_title': 'Add Blog',
+        'submit_text': 'Create Blog',
+    }
+    return render(request, 'dashboard/blog/blog_form.html', context)
 
 
+def ad_editblog(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Blog updated successfully.")
+            return redirect('ad_viewblog')
+    else:
+        form = BlogForm(instance=blog)
 
+    context = {
+        'form': form,
+        'page_title': 'Edit Blog',
+        'submit_text': 'Update Blog',
+    }
+    return render(request, 'dashboard/blog/blog_form.html', context)
 
-
+def ad_deleteblog(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == 'POST':
+        blog.delete()
+        messages.success(request, "Blog deleted successfully.")
+        return redirect('ad_viewblog')
+    
+    context = {
+        'blog': blog,
+    }
+    return render(request, 'dashboard/blog/ad_deleteblog.html', context)

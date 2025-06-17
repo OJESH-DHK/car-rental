@@ -22,6 +22,10 @@ urlpatterns = [
     path('ad_index/', views.ad_index, name='ad_index'),
     path('admin/index/edit-image/<int:id>/', views.edit_index_image, name='edit_index_image'),
     path('admin/rental/specs/<int:id>/', views.admin_rental_specs, name='admin_rental_specs'),
+    path('admin/blogs/', views.ad_viewblog, name='ad_viewblog'),
+    path('admin/blogs/add/', views.ad_addblog, name='ad_addblog'),
+    path('admin/blogs/edit/<int:blog_id>/', views.ad_editblog, name='ad_editblog'),
+    path('admin/blogs/delete/<int:blog_id>/', views.ad_deleteblog, name='ad_deleteblog'),
 
 
 

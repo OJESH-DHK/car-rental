@@ -4,7 +4,8 @@ from django.utils.html import format_html
 from .models import (
     Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs,
     Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest,
-    VehicleImage, CarSpec, ContactDetail, ContactMessage, UserRentalBooking
+    VehicleImage, CarSpec, ContactDetail, ContactMessage, UserRentalBooking,
+    Blog
 )
 
 admin.site.register(Vehicle)
@@ -48,3 +49,4 @@ class TripRequestAdmin(admin.ModelAdmin):
 
 admin.site.register(ContactDetail)
 admin.site.register(ContactMessage)
+admin.site.register(Blog)

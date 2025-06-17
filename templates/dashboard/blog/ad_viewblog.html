@@ -1,0 +1,64 @@
+{% extends 'dashboard/base/admin_base.html' %}
+{% load static %}
+{% block title %}Manage Blogs{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Blogs</h1>
+        <a href="{% url 'ad_addblog' %}" class="btn btn-primary">Add New Blog</a>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Author</th>
+                <th scope="col">Published Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for blog in blogs %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ blog.title }}</td>
+                <td>
+                    {% if blog.image %}
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid" style="max-width: 100px;">
+                    {% else %}
+                    <span class="text-muted">No Image</span>
+                    {% endif %}
+                </td>
+                <td>{{ blog.author.username }}</td>
+                <td>{{ blog.published_date|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'ad_editblog' blog.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{% url 'ad_deleteblog' blog.id %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this blog?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No blogs found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

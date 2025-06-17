@@ -1,12 +1,13 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
-    path('blog/', views.blog, name='blog'),
-    path('blog-single/', views.blog_single, name='blog_single'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+    path('blog/', views.blog_list, name='blog_list'),
     path('car/', views.car, name='car'),
     path('car/<str:car_type>/<int:id>/', views.car_single, name='car_single'),
 
@@ -19,4 +20,8 @@ urlpatterns = [
     path('book/user-car/<int:id>/', views.book_user_vehicle, name='book_user_vehicle'),
     
     path('contact/', views.contact_view, name='contact'),
+
+    
+    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

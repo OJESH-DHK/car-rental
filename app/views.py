@@ -208,7 +208,45 @@ def put_car_on_rent(request):
     return render(request, 'frontend/put_on_rent/put_your_car_on_rent.html')
 
 def rent_success(request):
-    return render(request, 'frontend/put_on_rent/success.html')  # make this template
+    return render(request, 'frontend/put_on_rent/success.html') 
+
+# views.py
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.urls import reverse
+from .models import CarRentalRequest, UserRentalBooking
+
+def book_user_vehicle(request, id):
+    rental = get_object_or_404(CarRentalRequest, id=id, status='accepted')
+
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        pickup_date = request.POST.get('pickup_date')
+        return_date = request.POST.get('return_date')
+
+        UserRentalBooking.objects.create(
+            rental=rental,
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            pickup_date=pickup_date,
+            return_date=return_date
+        )
+
+        messages.success(request, 'Your booking has been successfully submitted!')
+
+        # Redirect to the same page using reverse + id
+        return redirect(reverse('book_user_vehicle', kwargs={'id': rental.id}))
+
+    return render(request, 'frontend/booking/user_vehicle_booking.html', {
+        'rental': rental,
+        'specs': getattr(rental, 'specs', None),
+        'image': rental.images.first() if rental.images.exists() else None
+    })
+
 
 
 

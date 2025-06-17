@@ -160,6 +160,18 @@ class VehicleImage(models.Model):
     rental_request = models.ForeignKey(CarRentalRequest, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='vehicle_images/')
 
+class UserRentalBooking(models.Model):
+    rental = models.ForeignKey(CarRentalRequest, on_delete=models.CASCADE, related_name='user_bookings')
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    pickup_date = models.DateField()
+    return_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.rental.car_model} (User)"
+
 
 
 

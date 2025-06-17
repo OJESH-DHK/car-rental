@@ -15,6 +15,7 @@
                     <th scope="col">Car</th>
                     <th scope="col" class="d-none d-md-table-cell">Submitted At</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Specs</th>  <!-- New Specs column -->
                 </tr>
             </thead>
             <tbody>
@@ -39,11 +40,15 @@
                                 {{ rental.status|title }}
                             </span>
                         </td>
+                        <td>
+                           <a href="{% url 'admin_rental_specs' rental.id %}" class="btn btn-sm btn-outline-info">View</a>
+
+                        </td>
                     </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center text-muted fst-italic py-4">No rental requests found.</td>
+                        <td colspan="6" class="text-center text-muted fst-italic py-4">No rental requests found.</td>
                     </tr>
                 {% endif %}
             </tbody>

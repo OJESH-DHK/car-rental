@@ -16,6 +16,10 @@ urlpatterns = [
     path('admin/vehicles/add/', views.admin_add_vehicle, name='admin_add_vehicle'),
     path('admin-dashboard/rentals/', views.admin_rental_requests_view, name='admin_rental_requests'),
     path('rental-requests/<int:id>/', views.admin_rental_detail, name='admin_rental_detail'),
+    path('ad_index/', views.ad_index, name='ad_index'),
+    path('admin/index/edit-image/<int:id>/', views.edit_index_image, name='edit_index_image'),
+    path('admin/rental/specs/<int:id>/', views.admin_rental_specs, name='admin_rental_specs'),
+
 
 
 

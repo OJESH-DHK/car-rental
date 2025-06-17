@@ -45,36 +45,33 @@
       </div>
       {% endfor %}
 
-      {# --- User-Added Accepted Rentals --- #}
-      {% for rental in accepted_rentals %}
-      <div class="col-md-4">
-        <div class="car-wrap rounded ftco-animate">
-          {% if rental.images.all %}
-            <div class="img rounded d-flex align-items-end" style="background-image: url('{{ rental.images.first.image.url }}');"></div>
-          {% else %}
-            <div class="img rounded d-flex align-items-end" style="background-color: #ddd;"></div>
-          {% endif %}
-          <div class="text">
-            <h2 class="mb-0">
-              <a href="{% url 'car_single' 'user' rental.id %}">{{ rental.car_model }}</a>
-            </h2>
-            <div class="d-flex mb-3">
-              <span class="cat">{{ rental.car_brand }}</span>
-              <p class="price ml-auto text-muted">User Submission</p>
-            </div>
-            <p class="d-flex mb-0 d-block">
-              <a href="{% url 'car_single' 'user' rental.id %}" class="btn btn-secondary py-2 ml-1">Details</a>
-            </p>
-          </div>
-        </div>
+      
+{% for rental in accepted_rentals %}
+<div class="col-md-4">
+  <div class="car-wrap rounded ftco-animate">
+    {% if rental.images.all %}
+      <div class="img rounded d-flex align-items-end" style="background-image: url('{{ rental.images.first.image.url }}');"></div>
+    {% else %}
+      <div class="img rounded d-flex align-items-end" style="background-color: #ddd;"></div>
+    {% endif %}
+    <div class="text">
+      <h2 class="mb-0">
+        <a href="{% url 'car_single' 'user' rental.id %}">{{ rental.car_model }}</a>
+      </h2>
+      <div class="d-flex mb-3">
+        <span class="cat">{{ rental.car_brand }}</span>
+        <p class="price ml-auto text-muted">User Submission</p>
       </div>
-      {% endfor %}
+      <p class="d-flex mb-0 d-block">
+        <a href="{% url 'book_user_vehicle' rental.id %}" class="btn btn-primary py-2 mr-1">Book now</a>
 
-      {% if vehicles|length == 0 and accepted_rentals|length == 0 %}
-        <p class="text-center w-100">No cars available at the moment.</p>
-      {% endif %}
-
+        <a href="{% url 'car_single' 'user' rental.id %}" class="btn btn-secondary py-2 ml-1">Details</a>
+      </p>
     </div>
+  </div>
+</div>
+{% endfor %}
+
   </div>
 </section>
 {% endblock %}

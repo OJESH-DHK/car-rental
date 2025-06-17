@@ -1,46 +1,29 @@
 {% extends 'dashboard/base/admin_base.html' %}
 {% load static %}
 
-{% block title %}Manage Index Section{% endblock %}
+{% block title %}Manage Index Images{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="mb-4 text-primary fw-bold">Manage Index Section</h2>
+    <h2 class="mb-4 text-primary fw-bold text-center">Index Section Images</h2>
 
-    <div class="mb-3">
-        <a href="{% url 'admin_add_index_image' %}" class="btn btn-success">Add New Image</a>
-    </div>
+    <div class="row justify-content-center">
+        {% for item in index_items %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <img src="{{ item.image.url }}" class="card-img-top rounded-top" alt="{{ item.title }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title small fw-bold text-dark">{{ item.title }}</h5>
+                    <a href="{% url 'edit_index_image' item.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
 
-    <div class="table-responsive shadow-sm rounded">
-        <table class="table table-bordered align-middle">
-            <thead class="table-primary text-uppercase small">
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in index_items %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ item.title }}</td>
-                    <td>
-                        <img src="{{ item.image.url }}" alt="Image" class="img-thumbnail" style="max-height: 100px;">
-                    </td>
-                    <td>
-                        <a href="{% url 'admin_edit_index_image' item.id %}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="{% url 'admin_delete_index_image' item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="text-center">No images found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No index images available.</p>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

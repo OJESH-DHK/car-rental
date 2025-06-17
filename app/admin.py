@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs, Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest, VehicleImage, CarSpec
+from .models import Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs, Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest, VehicleImage, CarSpec, UserRentalBooking
 
 admin.site.register(Vehicle)
 admin.site.register(CarSpec)
@@ -13,6 +13,7 @@ admin.site.register(Experience)
 admin.site.register(ServicesSection)
 admin.site.register(ServicesOffered)
 admin.site.register(Booking)
+admin.site.register(UserRentalBooking)
 @admin.register(VehicleImage)
 class VehicleImageAdmin(admin.ModelAdmin):
     list_display = ('rental_request', 'image_tag')

@@ -1,0 +1,16 @@
+# forms.py
+from django import forms
+from app.models import ContactDetail
+
+class ContactDetailForm(forms.ModelForm):
+    class Meta:
+        model = ContactDetail
+        fields = ['phone', 'email', 'address', 'facebook', 'instagram', 'twitter']
+        widgets = {
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'facebook': forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram': forms.URLInput(attrs={'class': 'form-control'}),
+            'twitter': forms.URLInput(attrs={'class': 'form-control'}),
+        }

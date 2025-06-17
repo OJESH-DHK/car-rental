@@ -1,0 +1,55 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% load widget_tweaks %}
+{% block title %}Edit Contact Details{% endblock %}
+
+{% block content %}
+<h2>Edit Contact Details</h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_phone" class="form-label">Phone</label>
+        {% render_field form.phone class="form-control" %}
+        {% if form.phone.errors %}
+            <div class="text-danger">{{ form.phone.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="id_email" class="form-label">Email</label>
+        {% render_field form.email class="form-control" %}
+        {% if form.email.errors %}
+            <div class="text-danger">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="id_address" class="form-label">Address</label>
+        {% render_field form.address class="form-control" rows="3" %}
+        {% if form.address.errors %}
+            <div class="text-danger">{{ form.address.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="id_twitter" class="form-label">Twitter URL</label>
+        {% render_field form.twitter class="form-control" %}
+        {% if form.twitter.errors %}
+            <div class="text-danger">{{ form.twitter.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="id_facebook" class="form-label">Facebook URL</label>
+        {% render_field form.facebook class="form-control" %}
+        {% if form.facebook.errors %}
+            <div class="text-danger">{{ form.facebook.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="id_instagram" class="form-label">Instagram URL</label>
+        {% render_field form.instagram class="form-control" %}
+        {% if form.instagram.errors %}
+            <div class="text-danger">{{ form.instagram.errors }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

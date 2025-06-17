@@ -1,0 +1,34 @@
+{% extends "dashboard/base/admin_base.html" %}
+{% block title %}Contact Details{% endblock %}
+
+{% block content %}
+<h2>Contact Details</h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+{% if detail %}
+<div class="card">
+    <div class="card-body">
+        <p><strong>📞 Phone:</strong> {{ detail.phone }}</p>
+        <p><strong>📧 Email:</strong> {{ detail.email }}</p>
+        <p><strong>🏠 Address:</strong> {{ detail.address }}</p>
+        {% if detail.twitter %}
+        <p><strong>🐦 Twitter:</strong> <a href="{{ detail.twitter }}" target="_blank">{{ detail.twitter }}</a></p>
+        {% endif %}
+        {% if detail.facebook %}
+        <p><strong>📘 Facebook:</strong> <a href="{{ detail.facebook }}" target="_blank">{{ detail.facebook }}</a></p>
+        {% endif %}
+        {% if detail.instagram %}
+        <p><strong>📸 Instagram:</strong> <a href="{{ detail.instagram }}" target="_blank">{{ detail.instagram }}</a></p>
+        {% endif %}
+        <a href="{% url 'admin_contact_detail_edit' %}" class="btn btn-warning">Edit</a>
+    </div>
+</div>
+{% else %}
+<p>No contact details found. <a href="{% url 'admin_contact_detail_edit' %}">Add now</a></p>
+{% endif %}
+{% endblock %}

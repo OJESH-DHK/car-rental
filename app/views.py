@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from itertools import chain
 
-from .models import Vehicle, Index, TripRequest, CarRentalRequest, CarRentalRequest, AboutUs, Testimonial, Experience, ServicesSection, ServicesOffered
+from .models import (
+    Vehicle, Index, TripRequest, CarRentalRequest, CarRentalRequest,
+    AboutUs, Testimonial, Experience, ServicesSection, ServicesOffered,
+    ContactDetail, ContactMessage
+)
 
 
 
@@ -117,10 +121,6 @@ def car_single(request, car_type, id):
         return redirect('index')
 
 
-
-def contact(request):
-    return render(request, 'frontend/contact.html')
-
 def main(request):
     return render(request, 'frontend/main.html')
 
@@ -211,6 +211,28 @@ def rent_success(request):
     return render(request, 'frontend/put_on_rent/success.html')  # make this template
 
 
+def contact_view(request):
+    contact_info = ContactDetail.objects.first()
 
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message_text = request.POST.get('message')
+
+        if name and email and subject and message_text:
+            # Save the message
+            ContactMessage.objects.create(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message_text
+            )
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+        else:
+            messages.error(request, 'Please fill in all the fields.')
+
+    return render(request, 'frontend/contact.html', {'contact_info': contact_info})
 
 

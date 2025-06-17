@@ -16,6 +16,9 @@ urlpatterns = [
     path('admin/vehicles/add/', views.admin_add_vehicle, name='admin_add_vehicle'),
     path('admin-dashboard/rentals/', views.admin_rental_requests_view, name='admin_rental_requests'),
     path('rental-requests/<int:id>/', views.admin_rental_detail, name='admin_rental_detail'),
+    path('admin/contact-details/', views.admin_contact_details, name='admin_contact_details'),
+    path('admin/contact-detail/edit/', views.admin_contact_detail_edit, name='admin_contact_detail_edit'),
+    path('admin/contact-messages/', views.admin_contact_messages, name='admin_contact_messages'),
 
 
 

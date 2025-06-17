@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs, Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest, VehicleImage, CarSpec
+from .models import (
+    Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs,
+    Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest,
+    VehicleImage, CarSpec, ContactDetail, ContactMessage
+)
 
 admin.site.register(Vehicle)
 admin.site.register(CarSpec)
@@ -40,3 +44,6 @@ class TripRequestAdmin(admin.ModelAdmin):
         'dropoff_date',
         'pickup_time',
     )
+
+admin.site.register(ContactDetail)
+admin.site.register(ContactMessage)

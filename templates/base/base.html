@@ -69,9 +69,27 @@
             <h2 class="ftco-heading-2"><a href="#" class="logo">Car<span>book</span></a></h2>
             <p>Far far away, behind the word mountains...</p>
             <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-              <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-              <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-              <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              {% if contact_detail and contact_detail.twitter %}
+              <li class="ftco-animate">
+                <a href="{{ contact_detail.twitter }}" target="_blank">
+                  <span class="icon-twitter"></span>
+                </a>
+              </li>
+              {% endif %}
+              {% if contact_detail and contact_detail.facebook %}
+              <li class="ftco-animate">
+                <a href="{{ contact_detail.facebook }}" target="_blank">
+                  <span class="icon-facebook"></span>
+                </a>
+              </li>
+              {% endif %}
+              {% if contact_detail and contact_detail.instagram %}
+              <li class="ftco-animate">
+                <a href="{{ contact_detail.instagram }}" target="_blank">
+                  <span class="icon-instagram"></span>
+                </a>
+              </li>
+              {% endif %}
             </ul>
           </div>
         </div>
@@ -103,11 +121,32 @@
           <div class="ftco-footer-widget mb-4">
             <h2 class="ftco-heading-2">Have a Questions?</h2>
             <div class="block-23 mb-3">
-              <ul>
-                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St., San Francisco, USA</span></li>
-                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
-              </ul>
+            <ul>
+              {% if contact_detail and contact_detail.address %}
+              <li>
+                <span class="icon icon-map-marker"></span>
+                <span class="text">{{ contact_detail.address }}</span>
+              </li>
+              {% endif %}
+
+              {% if contact_detail and contact_detail.phone %}
+              <li>
+                <a href="tel:{{ contact_detail.phone }}">
+                  <span class="icon icon-phone"></span>
+                  <span class="text">{{ contact_detail.phone }}</span>
+                </a>
+              </li>
+              {% endif %}
+
+              {% if contact_detail and contact_detail.email %}
+              <li>
+                <a href="mailto:{{ contact_detail.email }}">
+                  <span class="icon icon-envelope"></span>
+                  <span class="text">{{ contact_detail.email }}</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
             </div>
           </div>
         </div>

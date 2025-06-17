@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
+from django.contrib import messages
 from app.models import (
     Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
-    ServicesSection, ServicesOffered
+    ServicesSection, ServicesOffered, CarRentalRequest, ContactDetail, ContactMessage
 )
 from app.models import Vehicle, VehicleImage
-
+from .forms import ContactDetailForm
 from app.models import AboutUs, Vehicle
 from django.contrib import messages
 
@@ -191,5 +193,26 @@ def admin_rental_detail(request, id):
     return render(request, 'dashboard/put_on_rent/rental_detail.html', context)
 
 
+def admin_contact_details(request):
+    contact_detail = ContactDetail.objects.first()
+    return render(request, 'dashboard/admin_contact_details.html', {'detail': contact_detail})
+
+def admin_contact_detail_edit(request):
+    contact_detail, created = ContactDetail.objects.get_or_create(pk=1)
+
+    if request.method == 'POST':
+        form = ContactDetailForm(request.POST, instance=contact_detail)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Contact details updated successfully.")
+            return redirect(reverse('admin_contact_details'))  # Redirect to the contact details page
+    else:
+        form = ContactDetailForm(instance=contact_detail)
+
+    return render(request, 'dashboard/admin_contact_detail_edit.html', {'form': form})
+
+def admin_contact_messages(request):
+    messages = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'dashboard/admin_contact_messages.html', {'messages': messages})
 
 

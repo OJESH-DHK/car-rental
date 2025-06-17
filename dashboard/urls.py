@@ -28,6 +28,10 @@ urlpatterns = [
     path('admin/testimonials/delete/<int:pk>/', views.delete_testimonial, name='delete_testimonial'),
     path('admin/testimonials/add/', views.add_testimonial, name='add_testimonial'),
     path('dashboard/admin/counter/', views.admin_counter, name='admin_counter'),
+    path('admin/blogs/', views.ad_viewblog, name='ad_viewblog'),
+    path('admin/blogs/add/', views.ad_addblog, name='ad_addblog'),
+    path('admin/blogs/edit/<int:blog_id>/', views.ad_editblog, name='ad_editblog'),
+    path('admin/blogs/delete/<int:blog_id>/', views.ad_deleteblog, name='ad_deleteblog'),
 
 
 

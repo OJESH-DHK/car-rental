@@ -1,6 +1,6 @@
-# forms.py
 from django import forms
-from app.models import ContactDetail
+from app.models import ContactDetail, Blog
+
 
 class ContactDetailForm(forms.ModelForm):
     class Meta:
@@ -21,3 +21,10 @@ class TestimonialForm(forms.ModelForm):
     class Meta:
         model = Testimonial
         fields = ['name', 'position', 'testimonial', 'person_image']
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = [
+            'title', 'content', 'image'
+        ]

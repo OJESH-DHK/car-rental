@@ -5,7 +5,7 @@ from itertools import chain
 from .models import (
     Vehicle, Index, TripRequest, CarRentalRequest, CarRentalRequest,
     AboutUs, Testimonial, Experience, ServicesSection, ServicesOffered,
-    ContactDetail, ContactMessage
+    ContactDetail, ContactMessage, Blog
 )
 
 
@@ -69,12 +69,6 @@ def about(request):
         'testimonials': testimonials,
     }
     return render(request, 'frontend/about.html', context)
-
-def blog(request):
-    return render(request, 'frontend/blog.html')
-
-def blog_single(request):
-    return render(request, 'frontend/blog-single.html')
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
@@ -274,3 +268,24 @@ def contact_view(request):
     return render(request, 'frontend/contact.html', {'contact_info': contact_info})
 
 
+from django.core.paginator import Paginator
+
+def blog_list(request):
+    blog_list = Blog.objects.all().order_by('-published_date')
+    paginator = Paginator(blog_list, 6)  # 6 per page
+    page_number = request.GET.get('page')
+    blogs = paginator.get_page(page_number)
+    return render(request, 'frontend/blog_list.html', {'blogs': blogs})
+
+def blog_detail(request, slug):
+    blog = get_object_or_404(Blog, slug=slug)
+
+    # Get recent blogs (excluding the current one)
+    recent_blogs = Blog.objects.exclude(id=blog.id).order_by('-published_date')[:3]
+
+    context = {
+        'blog': blog,
+        'recent_blogs': recent_blogs,
+    }
+
+    return render(request, 'frontend/blog_detail.html', context)

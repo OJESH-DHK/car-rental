@@ -16,6 +16,7 @@ class Vehicle(models.Model):
     car_model = models.CharField(max_length=100)
     price_per_day = models.DecimalField(max_digits=8, decimal_places=2)
     features = models.ManyToManyField(Feature, blank=True)
+    description = models.TextField(blank=True, null=True) 
     image = models.ImageField(upload_to='vehicles/')
     mileage = models.PositiveIntegerField( blank=True)
     transmission = models.CharField(max_length=50 , blank=True, choices=[
@@ -57,6 +58,7 @@ class TripRequest(models.Model):
     pickup_date = models.DateField()
     dropoff_date = models.DateField()
     pickup_time = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     def __str__(self):
         return f"{self.full_name} - {self.phone}"
 

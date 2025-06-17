@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ service.services_offered }} | Carbook{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2 js-fullheight" 
+         style="background-image: url({% static 'images/bg_3.jpg' %});" 
+         data-stellar-background-ratio="0.5">
+  <div class="overlay" style="background-color: rgba(0,0,0,0.5);"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs text-white small">
+          <a href="{% url 'index' %}" class="text-white">Home <i class="ion-ios-arrow-forward"></i></a> &nbsp;
+          <a href="{% url 'service' %}" class="text-white">Services <i class="ion-ios-arrow-forward"></i></a> &nbsp;
+          <span>{{ service.services_offered }}</span>
+        </p>
+        <h1 class="mb-3 bread text-white">{{ service.services_offered }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Content Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Main content -->
+      <div class="col-md-8">
+        {% if service.image and service.image.image %}
+          <img src="{{ service.image.image.url }}" alt="{{ service.services_offered }}" class="img-fluid rounded mb-4" />
+        {% endif %}
+        <p style="font-size: 1.2rem; line-height: 1.6; color: #444;">
+          {{ service.services_offered_desc }}
+        </p>
+
+        <a href="{% url 'service' %}" class="btn btn-outline-primary mt-3">← Back to Services</a>
+      </div>
+
+      <!-- Latest services sidebar -->
+      <div class="col-md-4">
+        <h4 class="mb-4">Latest Services</h4>
+        <ul class="list-group">
+          {% for latest in latest_services %}
+          <li class="list-group-item">
+            <a href="{% url 'service_detail' latest.id %}" class="text-decoration-none text-dark">
+              <strong>{{ latest.services_offered }}</strong><br>
+              <small class="text-muted">{{ latest.services_offered_desc|truncatechars:70 }}</small>
+            </a>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-muted">No recent services available.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,8 +1,6 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-
-
 <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{{ vehicle.image.url }}');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
   <div class="container">
@@ -18,8 +16,7 @@
   </div>
 </section>
 
-
-    {% if messages %}
+{% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -30,8 +27,6 @@
   </div>
 {% endif %}
 
-
-
 <section class="ftco-section ftco-car-details">
   <div class="container">
     <div class="row justify-content-center mb-5">
@@ -41,7 +36,6 @@
         <p class="price text-primary h4">रु {{ vehicle.price_per_day }} <small>/ day</small></p>
       </div>
     </div>
-
 
     <div class="row justify-content-center">
       <div class="col-md-6 ftco-animate">
@@ -70,9 +64,8 @@
               <input type="tel" name="phone" class="form-control" placeholder="98XXXXXXXX" required>
             </div>
             <div class="form-group text-center">
-  <a href="{% url 'booking_confirmed' %}" class="btn btn-primary px-5 py-2">Confirm Booking</a>
-</div>
-
+              <button type="submit" class="btn btn-primary px-5 py-2">Confirm Booking</button>
+            </div>
           </form>
         </div>
       </div>

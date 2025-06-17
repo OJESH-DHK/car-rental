@@ -50,8 +50,13 @@
           {% endif %}
 
           <div class="card-body text-center">
-            <h5 class="card-title fw-bold">{{ service.services_offered }}</h5>
-            <p class="card-text">{{ service.services_offered_desc }}</p>
+            <h5 class="card-title fw-bold">
+  <a href="{% url 'service_detail' service.id %}" class="text-decoration-none text-dark">
+    {{ service.services_offered }}
+  </a>
+</h5>
+
+            <p class="card-text">{{ service.services_offered_desc|truncatechars:100 }}</p>
           </div>
         </div>
       </div>

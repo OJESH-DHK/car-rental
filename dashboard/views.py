@@ -125,10 +125,10 @@ def about_view(request):
     return render(request, 'dashboard/about/ad_viewabout.html', {'about': about})
 
 
-#trip request 
 def trip_request(request):
-    trip_requests = TripRequest.objects.all()
-    return render(request,'dashboard/trip_request/triprequest.html', {'trip_requests': trip_requests})
+    trip_requests = TripRequest.objects.all().order_by('-created_at')
+    return render(request, 'dashboard/trip_request/triprequest.html', {'trip_requests': trip_requests})
+
 
 
 
@@ -158,6 +158,34 @@ def ad_about(request):
 def ad_vehicle(request):
     vehicles = Vehicle.objects.all()
     return render(request, 'dashboard/vehicle/ad_vehicle.html', {'vehicles': vehicles})
+
+
+def delete_vehicle(request, id):
+    vehicle = get_object_or_404(Vehicle, id=id)
+    vehicle.delete()
+    messages.success(request, "Vehicle deleted successfully.")
+    return redirect('admin_vehicles')  # Make sure this name matches your URL
+
+def edit_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    if request.method == 'POST':
+        vehicle.car_brand = request.POST.get('car_brand')
+        vehicle.car_model = request.POST.get('car_model')
+        vehicle.price_per_day = request.POST.get('price_per_day')
+        vehicle.transmission = request.POST.get('transmission')
+        vehicle.seats = request.POST.get('seats')
+        vehicle.mileage = request.POST.get('mileage')
+        vehicle.luggage_capacity = request.POST.get('luggage_capacity')
+
+        if 'image' in request.FILES:
+            vehicle.image = request.FILES['image']
+
+        vehicle.save()
+        messages.success(request, "Vehicle updated successfully.")
+        return redirect('admin_vehicles')  # Change to your actual URL name
+
+    return render(request, 'dashboard/vehicle/edit_vehicle.html', {'vehicle': vehicle})
 
 
 
@@ -306,6 +334,21 @@ def booking_dashboard(request):
         'user_bookings': user_bookings,
     })
 
+
+def delete_admin_booking(request, id):
+    booking = get_object_or_404(Booking, id=id)
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, 'Admin booking deleted successfully.')
+    return redirect('booking_dashboard')
+
+def delete_user_booking(request, id):
+    booking = get_object_or_404(UserRentalBooking, id=id)
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, 'User booking deleted successfully.')
+    return redirect('booking_dashboard')
+
 from app.models import Testimonial  
 
 def admin_testimonials(request):
@@ -413,3 +456,15 @@ def ad_deleteblog(request, blog_id):
         'blog': blog,
     }
     return render(request, 'dashboard/blog/ad_deleteblog.html', context)
+
+def delete_trip_request(request, id):
+    trip = get_object_or_404(TripRequest, id=id)
+    trip.delete()
+    messages.success(request, "Trip request deleted successfully.")
+    return redirect('ad_tripreq')  
+
+def delete_contact_message(request, id):
+    message = get_object_or_404(ContactMessage, id=id)
+    message.delete()
+    messages.success(request, "Message deleted successfully.")
+    return redirect('admin_contact_messages')  # replace with your actual URL name

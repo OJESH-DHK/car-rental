@@ -18,6 +18,7 @@ urlpatterns = [
     path('put_car_on_rent/', views.put_car_on_rent, name='put_car_on_rent'),
     path('rent-success/', views.rent_success, name='rent_success'),
     path('book/user-car/<int:id>/', views.book_user_vehicle, name='book_user_vehicle'),
+    path('services/<int:id>/', views.service_detail, name='service_detail'),
     
     path('contact/', views.contact_view, name='contact'),
 

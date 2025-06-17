@@ -13,7 +13,9 @@ urlpatterns = [
     path('ad_viewabout/', views.about_view, name='ad_viewabout'),
     path('trip_request/',views.trip_request,name='ad_tripreq'),
     path('vehicles/', views.ad_vehicle, name='admin_vehicles'),
+    path('vehicles/delete/<int:id>/', views.delete_vehicle, name='delete_vehicle'),
     path('admin/vehicles/add/', views.admin_add_vehicle, name='admin_add_vehicle'),
+    path('dashboard/vehicle/edit/<int:vehicle_id>/', views.edit_vehicle, name='edit_vehicle'),
     path('admin-dashboard/rentals/', views.admin_rental_requests_view, name='admin_rental_requests'),
     path('rental-requests/<int:id>/', views.admin_rental_detail, name='admin_rental_detail'),
     path('admin/contact-details/', views.admin_contact_details, name='admin_contact_details'),
@@ -23,6 +25,8 @@ urlpatterns = [
     path('admin/index/edit-image/<int:id>/', views.edit_index_image, name='edit_index_image'),
     path('admin/rental/specs/<int:id>/', views.admin_rental_specs, name='admin_rental_specs'),
     path('bookings/', views.booking_dashboard, name='booking_dashboard'),
+    path('dashboard/bookings/delete-admin/<int:id>/', views.delete_admin_booking, name='delete_admin_booking'),
+    path('dashboard/bookings/delete-user/<int:id>/', views.delete_user_booking, name='delete_user_booking'),
     path('admin/testimonials/', views.admin_testimonials, name='admin_testimonials'),
     path('admin/testimonials/edit/<int:pk>/', views.edit_testimonial, name='edit_testimonial'),
     path('admin/testimonials/delete/<int:pk>/', views.delete_testimonial, name='delete_testimonial'),
@@ -32,6 +36,9 @@ urlpatterns = [
     path('admin/blogs/add/', views.ad_addblog, name='ad_addblog'),
     path('admin/blogs/edit/<int:blog_id>/', views.ad_editblog, name='ad_editblog'),
     path('admin/blogs/delete/<int:blog_id>/', views.ad_deleteblog, name='ad_deleteblog'),
+    path('trip-requests/delete/<int:id>/', views.delete_trip_request, name='delete_trip_request'),
+    path('contact-messages/delete/<int:id>/', views.delete_contact_message, name='delete_contact_message'),
+
 
 
 

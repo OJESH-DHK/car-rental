@@ -130,6 +130,15 @@ def services(request):
     }
     return render(request, 'frontend/services.html', context)
 
+
+def service_detail(request, id):
+    service = get_object_or_404(ServicesOffered, id=id)
+    latest_services = ServicesOffered.objects.order_by('-id')[:5]  # latest 5 services
+    return render(request, 'frontend/service_single.html', {
+        'service': service,
+        'latest_services': latest_services,
+    })
+
 #book a vehicle
 
 from .models import Vehicle, Booking
@@ -148,7 +157,9 @@ def book_vehicle(request, vehicle_id):
 
         # Save booking
         Booking.objects.create(
-            vehicle=vehicle,
+            vehicle=
+            
+            vehicle,
             full_name=name,
             email=email,
             phone=phone,

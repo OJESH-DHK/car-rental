@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Car Listed Successfully | Carbook{% endblock %}
+{% block title %}Booking Confirmed | Carbook{% endblock %}
 
 {% block content %}
 
@@ -13,21 +13,21 @@
       <div class="col-md-9 ftco-animate pb-5">
         <p class="breadcrumbs">
           <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> 
-          <span>Car Listed <i class="ion-ios-arrow-forward"></i></span>
+          <span>Booking Confirmed <i class="ion-ios-arrow-forward"></i></span>
         </p>
-        <h1 class="mb-3 bread">Car Listed Successfully</h1>
+        <h1 class="mb-3 bread">Booking Confirmed</h1>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Success Message Section -->
+<!-- Confirmation Section -->
 <section class="ftco-section bg-light">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8 text-center ftco-animate">
-        <h2 class="mb-4">Your Car Has Been Listed!</h2>
-        <p class="lead">Thank you for submitting your car details. Our team will review your request and get in touch with you soon.</p>
+        <h2 class="mb-4 text-success">Your Booking is Confirmed!</h2>
+        <p class="lead">Thank you for booking with <strong>RRR (Rent Ride Relax)</strong>. We’ve received your request and will prepare everything for your smooth ride.</p>
         <a href="{% url 'index' %}" class="btn btn-primary mt-3">Back to Home</a>
       </div>
     </div>

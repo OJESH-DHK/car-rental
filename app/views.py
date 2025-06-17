@@ -289,3 +289,6 @@ def blog_detail(request, slug):
     }
 
     return render(request, 'frontend/blog_detail.html', context)
+
+def booking_confirmed(request):
+    return render(request, 'frontend/booking/booking_done.html')

@@ -5,24 +5,58 @@
 
 {% block content %}
 
+<style>
+  /* Previous hero styles ... (keep as is) */
+
+  /* Smaller form adjustments */
+  .request-form {
+    max-width: 400px;       /* smaller max width */
+    padding: 20px 25px !important; /* less padding */
+    font-size: 0.9rem;      /* slightly smaller font */
+  }
+
+  /* Make input fields slightly smaller */
+  .request-form .form-control {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  /* Reduce spacing between inputs */
+  .request-form .mb-3,
+  .request-form .row.g-2.mb-3 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Submit button smaller */
+  .request-form input[type="submit"] {
+    padding: 10px 30px !important;
+    font-size: 16px !important;
+  }
+</style>
+
 <!-- Hero Section -->
-<div class="hero-wrap ftco-degree-bg" style="background-image: url('{{ index.image.url }}');" data-stellar-background-ratio="0.5">
+<div class="hero-wrap ftco-degree-bg position-relative" 
+     style="background-image: url('{{ index.image.url }}');" 
+     data-stellar-background-ratio="0.5">
+
   <div class="overlay"></div>
-  <div class="container h-100 d-flex align-items-center">
-    <div class="row w-100 align-items-center flex-column flex-lg-row">
+
+  <div class="container py-5 position-relative">
+    <div class="row align-items-center justify-content-between g-4">
 
       <!-- Form Column (Left) -->
-      <div class="col-lg-5 w-100 px-3 mb-4 mb-lg-0">
-        <form action="{% url 'index' %}" method="POST" class="request-form ftco-animate bg-primary p-4 rounded shadow-lg" style="max-width: 100%;">
+      <div class="col-lg-5 col-md-10 mx-auto">
+        <br><br>
+        <form action="{% url 'index' %}" method="POST" class="request-form ftco-animate bg-primary rounded shadow-lg">
           {% csrf_token %}
           <h2 class="text-white mb-4 text-center">Make Your Trip</h2>
 
-          <div class="d-flex gap-2 mb-3 flex-column flex-md-row">
-            <div class="flex-fill">
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
               <label class="label text-white" for="full_name">Full Name</label>
               <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name" required>
             </div>
-            <div class="flex-fill">
+            <div class="col-md-6">
               <label class="label text-white" for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Your email" required>
             </div>
@@ -43,12 +77,12 @@
             <input type="text" class="form-control" id="dropoff_location" name="dropoff_location" placeholder="City, Airport, Station, etc" required>
           </div>
 
-          <div class="d-flex gap-3 mb-3 flex-column flex-md-row">
-            <div class="flex-fill">
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
               <label class="label text-white" for="pickup_date">Pick-up Date</label>
               <input type="date" class="form-control" id="pickup_date" name="pickup_date" required>
             </div>
-            <div class="flex-fill">
+            <div class="col-md-6">
               <label class="label text-white" for="dropoff_date">Drop-off Date</label>
               <input type="date" class="form-control" id="dropoff_date" name="dropoff_date" required>
             </div>
@@ -60,19 +94,17 @@
           </div>
 
           <div class="text-center">
-            <input type="submit" value="Rent A Car Now" class="btn btn-secondary py-3 px-5 fw-bold shadow-sm" style="font-size: 18px;">
+            <input type="submit" value="Rent A Car Now" class="btn btn-secondary fw-bold shadow-sm">
           </div>
         </form>
       </div>
 
       <!-- Hero Text Column (Right) -->
-      <div class="col-lg-7 text-white text-center text-lg-start ftco-animate w-100 px-3">
-        <h1 class="mb-4 display-4 fw-bold" style="text-shadow: 2px 2px 8px rgba(127, 56, 56, 0.7);">
-
-        </h1>
+      <div class="col-lg-6 text-white text-center text-lg-start ftco-animate">
+        <h1 class="mb-4 display-5 fw-bold text-white" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.6);"></h1>
 
         {% if index.video_link %}
-        <a href="{{ index.video_link }}" class="popup-vimeo d-flex align-items-center justify-content-start text-decoration-none mb-3" style="max-width: 220px;">
+        <a href="{{ index.video_link }}" class="popup-vimeo d-flex align-items-center justify-content-start text-decoration-none mb-3">
           <div class="icon d-flex align-items-center justify-content-center me-2 rounded-circle bg-white" style="width: 50px; height: 50px;">
             <span class="ion-ios-play" style="font-size: 24px; color: red;"></span>
           </div>
@@ -82,14 +114,16 @@
         </a>
         {% endif %}
 
-        <p class="lead" style="font-size: 20px; max-width: 700px; text-shadow: 1px 1px 5px rgba(0,0,0,0.6);">
-      
-        </p>
+        <p class="lead" style="font-size: 20px; max-width: 650px; text-shadow: 1px 1px 5px rgba(0,0,0,0.6);"></p>
       </div>
 
     </div>
   </div>
 </div>
+
+
+
+
 
 <!-- Services Section -->
 <div class="col-md-8 d-flex align-items-center mx-auto my-5">

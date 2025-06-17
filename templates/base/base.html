@@ -61,68 +61,66 @@
     {% block content %}
     {% endblock %}
   </main>
+<!-- Footer -->
+<footer class="ftco-footer ftco-bg-dark ftco-section">
+  <div class="container">
+    <div class="row mb-5">
+      <!-- Logo & Description -->
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4">
+          <h2 class="ftco-heading-2">
+            <img src="{% static 'images/logo.png' %}" alt="Carbook Logo" style="max-height: 90px;">
+          </h2>
+          <p class="fw-bold mb-1">RRR (Rent Ride Relax)</p>
+          <p class="mb-3 fst-italic">
+            Your trusted partner for smooth and reliable car rentals. Ride, relax, and enjoy your journey with RRR.
+          </p>
+          <ul class="ftco-footer-social list-unstyled d-flex gap-3">
+            {% if contact_detail and contact_detail.twitter %}
+            <li class="ftco-animate">
+              <a href="{{ contact_detail.twitter }}" target="_blank" aria-label="Twitter">
+                <span class="icon-twitter"></span>
+              </a>
+            </li>
+            {% endif %}
+            {% if contact_detail and contact_detail.facebook %}
+            <li class="ftco-animate">
+              <a href="{{ contact_detail.facebook }}" target="_blank" aria-label="Facebook">
+                <span class="icon-facebook"></span>
+              </a>
+            </li>
+            {% endif %}
+            {% if contact_detail and contact_detail.instagram %}
+            <li class="ftco-animate">
+              <a href="{{ contact_detail.instagram }}" target="_blank" aria-label="Instagram">
+                <span class="icon-instagram"></span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
 
-  <!-- Footer -->
-  <footer class="ftco-footer ftco-bg-dark ftco-section">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-md">
-          <div class="ftco-footer-widget mb-4">
-            <h2 class="ftco-heading-2"><img src="{% static 'images/logo.png' %}" alt="Carbook Logo" style="max-height: 90px;"></h2>
-            <p>Far far away, behind the word mountains...</p>
-            <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-              {% if contact_detail and contact_detail.twitter %}
-              <li class="ftco-animate">
-                <a href="{{ contact_detail.twitter }}" target="_blank">
-                  <span class="icon-twitter"></span>
-                </a>
-              </li>
-              {% endif %}
-              {% if contact_detail and contact_detail.facebook %}
-              <li class="ftco-animate">
-                <a href="{{ contact_detail.facebook }}" target="_blank">
-                  <span class="icon-facebook"></span>
-                </a>
-              </li>
-              {% endif %}
-              {% if contact_detail and contact_detail.instagram %}
-              <li class="ftco-animate">
-                <a href="{{ contact_detail.instagram }}" target="_blank">
-                  <span class="icon-instagram"></span>
-                </a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
+      <!-- Information Links -->
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4 ml-md-5">
+          <h2 class="ftco-heading-2">Information</h2>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'index' %}" class="py-2 d-block">Home</a></li>
+            <li><a href="{% url 'about' %}" class="py-2 d-block">About</a></li>
+            <li><a href="{% url 'servicess' %}" class="py-2 d-block">Services</a></li>
+            <li><a href="{% url 'car' %}" class="py-2 d-block">Cars</a></li>
+            <li><a href="{% url 'blog_list' %}" class="py-2 d-block">Blog</a></li>
+            <li><a href="{% url 'contact' %}" class="py-2 d-block">Contact</a></li>
+          </ul>
         </div>
-        <div class="col-md">
-          <div class="ftco-footer-widget mb-4 ml-md-5">
-            <h2 class="ftco-heading-2">Information</h2>
-            <ul class="list-unstyled">
-              <li><a href="#" class="py-2 d-block">About</a></li>
-              <li><a href="#" class="py-2 d-block">Services</a></li>
-              <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
-              <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
-              <li><a href="#" class="py-2 d-block">Privacy &amp; Cookies Policy</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md">
-          <div class="ftco-footer-widget mb-4">
-            <h2 class="ftco-heading-2">Customer Support</h2>
-            <ul class="list-unstyled">
-              <li><a href="#" class="py-2 d-block">FAQ</a></li>
-              <li><a href="#" class="py-2 d-block">Payment Option</a></li>
-              <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
-              <li><a href="#" class="py-2 d-block">How it works</a></li>
-              <li><a href="#" class="py-2 d-block">Contact Us</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md">
-          <div class="ftco-footer-widget mb-4">
-            <h2 class="ftco-heading-2">Have a Questions?</h2>
-            <div class="block-23 mb-3">
+      </div>
+
+      <!-- Contact Details -->
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4">
+          <h2 class="ftco-heading-2">Have a Questions?</h2>
+          <div class="block-23 mb-3">
             <ul>
               {% if contact_detail and contact_detail.address %}
               <li>
@@ -149,19 +147,27 @@
               </li>
               {% endif %}
             </ul>
-            </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <p>
-            &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-          </p>
-        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p class="mb-0">
+          &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved to 
+          <strong>RRR (Rent Ride Relax)</strong> | Designed by 
+          <a href="https://kitwosd.com" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-underline">Kitwosd</a>
+        </p>
       </div>
     </div>
-  </footer>
+  </div>
+</footer>
+
+
+
+
 
   <!-- Loader -->
   <div id="ftco-loader" class="show fullscreen">

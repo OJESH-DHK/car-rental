@@ -14,3 +14,10 @@ class ContactDetailForm(forms.ModelForm):
             'instagram': forms.URLInput(attrs={'class': 'form-control'}),
             'twitter': forms.URLInput(attrs={'class': 'form-control'}),
         }
+
+from app.models import Testimonial
+
+class TestimonialForm(forms.ModelForm):
+    class Meta:
+        model = Testimonial
+        fields = ['name', 'position', 'testimonial', 'person_image']

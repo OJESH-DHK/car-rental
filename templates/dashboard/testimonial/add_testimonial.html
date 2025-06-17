@@ -1,0 +1,57 @@
+{% extends 'dashboard/base/admin_base.html' %}
+
+{% block title %}Add Testimonial{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Add New Testimonial</h2>
+
+  <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="id_name" class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" id="id_name" required>
+      <div class="invalid-feedback">Please enter the name.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_position" class="form-label">Position</label>
+      <input type="text" name="position" class="form-control" id="id_position" required>
+      <div class="invalid-feedback">Please enter the position.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_testimonial" class="form-label">Testimonial</label>
+      <textarea name="testimonial" class="form-control" id="id_testimonial" rows="4" required></textarea>
+      <div class="invalid-feedback">Please enter the testimonial.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_person_image" class="form-label">Person Image</label>
+      <input type="file" name="person_image" class="form-control" id="id_person_image" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Testimonial</button>
+    <a href="{% url 'admin_testimonials' %}" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+</div>
+
+<script>
+// Bootstrap form validation (optional)
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})();
+</script>
+
+{% endblock %}

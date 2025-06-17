@@ -11,6 +11,7 @@ from app.models import Index
 from app.models import AboutUs, Vehicle
 from django.contrib import messages
 from app.models import CarRentalRequest, CarSpec
+from .forms import TestimonialForm 
 
 # Create your views here.
 def dashboard(request):
@@ -269,6 +270,71 @@ def admin_rental_specs(request, id):
         'rental': rental,
         'specs': specs,
     })
+
+from app.models import Booking, UserRentalBooking
+
+def booking_dashboard(request):
+    admin_bookings = Booking.objects.select_related('vehicle').order_by('-created_at')
+    user_bookings = UserRentalBooking.objects.select_related('rental').order_by('-created_at')
+
+    return render(request, 'dashboard/booking/booking.html', {
+        'admin_bookings': admin_bookings,
+        'user_bookings': user_bookings,
+    })
+
+from app.models import Testimonial  
+
+def admin_testimonials(request):
+    testimonials = Testimonial.objects.all()
+    return render(request, 'dashboard/testimonial/admin_testimonials.html', {'testimonials': testimonials})
+
+def edit_testimonial(request, pk):
+    testimonial = get_object_or_404(Testimonial, pk=pk)
+    if request.method == 'POST':
+        form = TestimonialForm(request.POST, request.FILES, instance=testimonial)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Testimonial updated successfully.')
+            return redirect('admin_testimonials')
+    else:
+        form = TestimonialForm(instance=testimonial)
+    return render(request, 'dashboard/testimonial/edit_testimonial.html', {'form': form})
+
+def delete_testimonial(request, pk):
+    testimonial = get_object_or_404(Testimonial, pk=pk)
+    testimonial.delete()
+    messages.success(request, 'Testimonial deleted successfully.')
+    return redirect('admin_testimonials')
+
+
+def add_testimonial(request):
+    if request.method == 'POST':
+        form = TestimonialForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Testimonial added successfully!")
+            return redirect('admin_testimonials')
+    else:
+        form = TestimonialForm()
+    return render(request, 'dashboard/testimonial/add_testimonial.html', {'form': form})
+
+from app.models import Experience
+from django.contrib import messages
+
+def admin_counter(request):
+    experience = Experience.objects.last()  # assuming one row
+
+    if request.method == 'POST':
+        experience.year_experienced = request.POST.get('year_experienced', 0)
+        experience.total_cars = request.POST.get('total_cars', 0)
+        experience.happy_customers = request.POST.get('happy_customers', 0)
+        experience.total_branches = request.POST.get('total_branches', 0)
+        experience.save()
+        messages.success(request, 'Counter stats updated successfully!')
+        return redirect('admin_counter')
+
+    return render(request, 'dashboard/counter/admin_counter.html', {'experience': experience})
+
 
 
 

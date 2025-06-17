@@ -137,10 +137,12 @@
     <div class="row">
       <div class="col-md-12">
         <div class="carousel-car owl-carousel">
+
           {% for vehicle in vehicles %}
           <div class="item">
             <div class="car-wrap rounded ftco-animate">
 
+              {# Vehicle Image Handling #}
               {% if vehicle.car_type == 'admin' and vehicle.image %}
                 <div class="img rounded d-flex align-items-end" style="background-image: url('{{ vehicle.image.url }}');"></div>
               {% elif vehicle.car_type == 'user' and vehicle.images.all %}
@@ -150,7 +152,10 @@
               {% endif %}
 
               <div class="text">
-                <h2 class="mb-0"><a href="#">{{ vehicle.car_model }}</a></h2>
+                <h2 class="mb-0">
+                  <a href="{% url 'car_single' vehicle.car_type vehicle.id %}">{{ vehicle.car_model }}</a>
+                </h2>
+
                 <div class="d-flex mb-3">
                   <span class="cat">{{ vehicle.car_brand }}</span>
                   {% if vehicle.car_type == 'admin' and vehicle.price_per_day %}
@@ -159,9 +164,12 @@
                     <p class="price ml-auto text-muted">User Submission</p>
                   {% endif %}
                 </div>
+
                 <p class="d-flex mb-0 d-block">
                   {% if vehicle.car_type == 'admin' %}
                     <a href="{% url 'book_vehicle' vehicle.id %}" class="btn btn-primary py-2 mr-1">Book now</a>
+                  {% elif vehicle.car_type == 'user' %}
+                    <a href="{% url 'book_user_vehicle' vehicle.id %}" class="btn btn-primary py-2 mr-1">Book now</a>
                   {% endif %}
                   <a href="{% url 'car_single' vehicle.car_type vehicle.id %}" class="btn btn-secondary py-2 ml-1">Details</a>
                 </p>
@@ -171,6 +179,7 @@
           {% empty %}
             <p>No vehicles found.</p>
           {% endfor %}
+
         </div>
       </div>
     </div>

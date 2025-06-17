@@ -22,6 +22,12 @@ urlpatterns = [
     path('ad_index/', views.ad_index, name='ad_index'),
     path('admin/index/edit-image/<int:id>/', views.edit_index_image, name='edit_index_image'),
     path('admin/rental/specs/<int:id>/', views.admin_rental_specs, name='admin_rental_specs'),
+    path('bookings/', views.booking_dashboard, name='booking_dashboard'),
+    path('admin/testimonials/', views.admin_testimonials, name='admin_testimonials'),
+    path('admin/testimonials/edit/<int:pk>/', views.edit_testimonial, name='edit_testimonial'),
+    path('admin/testimonials/delete/<int:pk>/', views.delete_testimonial, name='delete_testimonial'),
+    path('admin/testimonials/add/', views.add_testimonial, name='add_testimonial'),
+    path('dashboard/admin/counter/', views.admin_counter, name='admin_counter'),
 
 
 

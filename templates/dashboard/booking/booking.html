@@ -1,0 +1,79 @@
+{% extends 'dashboard/base/admin_base.html' %}
+
+{% block title %}Booking Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-primary fw-bold">All Bookings</h2>
+
+    <!-- Admin Vehicle Bookings -->
+    <div class="mb-5">
+        <h4 class="text-success">Admin Vehicle Bookings</h4>
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-success text-uppercase small">
+                    <tr>
+                        <th>Car</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Pickup</th>
+                        <th>Return</th>
+                        <th>Booked At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in admin_bookings %}
+                    <tr>
+                        <td>{{ booking.vehicle.car_model }}</td>
+                        <td>{{ booking.full_name }}</td>
+                        <td>{{ booking.email }}</td>
+                        <td>{{ booking.phone }}</td>
+                        <td>{{ booking.pickup_date }}</td>
+                        <td>{{ booking.return_date }}</td>
+                        <td>{{ booking.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center">No bookings yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Vehicle Bookings -->
+    <div>
+        <h4 class="text-info">User Vehicle Bookings</h4>
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-info text-uppercase small">
+                    <tr>
+                        <th>Car</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Pickup</th>
+                        <th>Return</th>
+                        <th>Booked At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in user_bookings %}
+                    <tr>
+                        <td>{{ booking.rental.car_model }}</td>
+                        <td>{{ booking.full_name }}</td>
+                        <td>{{ booking.email }}</td>
+                        <td>{{ booking.phone }}</td>
+                        <td>{{ booking.pickup_date }}</td>
+                        <td>{{ booking.return_date }}</td>
+                        <td>{{ booking.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center">No user bookings yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

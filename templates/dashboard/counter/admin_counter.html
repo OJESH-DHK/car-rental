@@ -1,0 +1,41 @@
+{% extends 'dashboard/base/admin_base.html' %}
+
+{% block title %}Manage Counter Stats{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-primary fw-bold">Manage Counter Statistics</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="year_experienced">Years of Experience</label>
+        <input type="number" class="form-control" id="year_experienced" name="year_experienced" value="{{ experience.year_experienced }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="total_cars">Total Cars</label>
+        <input type="number" class="form-control" id="total_cars" name="total_cars" value="{{ experience.total_cars }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="happy_customers">Happy Customers</label>
+        <input type="number" class="form-control" id="happy_customers" name="happy_customers" value="{{ experience.happy_customers }}">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="total_branches">Total Branches</label>
+        <input type="number" class="form-control" id="total_branches" name="total_branches" value="{{ experience.total_branches }}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success">Update Stats</button>
+  </form>
+</div>
+{% endblock %}

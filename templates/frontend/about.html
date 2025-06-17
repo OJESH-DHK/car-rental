@@ -47,6 +47,47 @@
 
 
 
+<style>
+  .testimony-wrap {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 20px;
+    background: #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border-radius: 10px;
+  }
+
+  .testimony-wrap .user-img {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+  }
+
+  .testimony-wrap .text {
+    flex-grow: 1;
+  }
+
+  .testimony-wrap .text p.mb-4 {
+    min-height: 100px;
+    margin-bottom: 1rem !important;
+  }
+
+  .testimony-wrap .name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .testimony-wrap .position {
+    color: #777;
+    font-size: 0.9rem;
+  }
+</style>
+
 <section class="ftco-section testimony-section bg-light">
   <div class="container">
     <div class="row justify-content-center mb-5">
@@ -60,10 +101,9 @@
         <div class="carousel-testimony owl-carousel ftco-owl">
           {% for t in testimonials %}
           <div class="item">
-            <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url('{{ t.person_image.url }}');">
-              </div>
-              <div class="text pt-4">
+            <div class="testimony-wrap text-center">
+              <div class="user-img" style="background-image: url('{{ t.person_image.url }}');"></div>
+              <div class="text px-3">
                 <p class="mb-4">{{ t.testimonial }}</p>
                 <p class="name">{{ t.name }}</p>
                 <span class="position">{{ t.position }}</span>
@@ -76,6 +116,8 @@
     </div>
   </div>
 </section>
+
+
 
 
 <section class="ftco-counter ftco-section img" id="section-counter">

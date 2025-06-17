@@ -78,8 +78,7 @@
                 <td>{{ service_item.services_offered_desc }}</td>
                 <td>
                     <a href="/dashboard/services/edit/{{ service_item.id }}/" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'delete_service' service_item.id %}" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Are you sure you want to delete this service?');">Delete</a>
+
 
                 </td>
             </tr>

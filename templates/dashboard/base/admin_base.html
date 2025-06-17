@@ -14,8 +14,6 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{% static 'dashboard/css/styles.css' %}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Favicon: remove if no org.logo.url context -->
-    <!-- <link rel="icon" type="image/png" href="{{ org.logo.url }}"> -->
 </head>
 <body class="sb-nav-fixed">
     <!-- Top Navigation Bar -->
@@ -24,8 +22,6 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
             <i class="fas fa-bars"></i>
         </button>
-        <div class="d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0"></div>
-
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,74 +50,58 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <!-- Core Section -->
+
+                        <!-- Core -->
                         <div class="sb-sidenav-menu-heading">Core</div>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
 
-                        <!-- Added menu items -->
-                        <a class="nav-link" href="{% url 'ad_index' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                            Index
+                        <!-- Details Section -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#detailsMenu" aria-expanded="false" aria-controls="detailsMenu">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Details
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        <div class="collapse" id="detailsMenu" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'ad_index' %}">Index</a>
+                                <a class="nav-link" href="{% url 'ad_viewabout' %}">About Us</a>
+                                <a class="nav-link" href="{% url 'service' %}">Services</a>
+                                <a class="nav-link" href="{% url 'admin_contact_details' %}">Contact Details</a>
+                                <a class="nav-link" href="{% url 'admin_testimonials' %}">Testimonials</a>
+                                <a class="nav-link" href="{% url 'admin_counter' %}">Experience Stats</a>
+                                <a class="nav-link" href="{% url 'ad_viewblog' %}">Blog</a>
+                            </nav>
+                        </div>
 
-                        <a class="nav-link" href="{% url 'ad_viewabout' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
-                            About Us
+                        <!-- Requests Section -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#requestsMenu" aria-expanded="false" aria-controls="requestsMenu">
+                            <div class="sb-nav-link-icon"><i class="fas fa-envelope-open-text"></i></div>
+                            Requests
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        <div class="collapse" id="requestsMenu" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'ad_tripreq' %}">Trip Requests</a>
+                                <a class="nav-link" href="{% url 'admin_contact_messages' %}">Messages</a>
+                                <a class="nav-link" href="{% url 'booking_dashboard' %}">Bookings</a>
+                            </nav>
+                        </div>
 
-                        <a class="nav-link" href="{% url 'service' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-concierge-bell"></i></div>
-                            Services
-                        </a>
-
-                        <a class="nav-link" href="{% url 'ad_tripreq' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-route"></i></div>
-                            Trip Requests
-                        </a>
-
-                        <a class="nav-link" href="{% url 'admin_vehicles' %}">
+                        <!-- Vehicles Section -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#vehiclesMenu" aria-expanded="false" aria-controls="vehiclesMenu">
                             <div class="sb-nav-link-icon"><i class="fas fa-car"></i></div>
-                            Vehicles   
+                            Vehicles
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-
-                        <a class="nav-link" href="{% url 'admin_rental_requests' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-car-side"></i></div>
-                            Car Rent Submissions
-                        </a>
-
-                        <a class="nav-link" href="{% url 'admin_contact_details' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
-                            Contact Details
-                        </a>
-
-                        <a class="nav-link" href="{% url 'admin_contact_messages' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
-                            Messages
-                        </a>
-
-
-                        <a class="nav-link" href="{% url 'booking_dashboard' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-car"></i></div>
-                                Bookings
-                        </a>
-                        <a class="nav-link" href="{% url 'admin_testimonials' %}">
-                             <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
-                        Testimonials
-                        </a>
-                        <a class="nav-link" href="{% url 'admin_counter' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
-                        Experience counter Stats
-                        </a>
-
-
-
-                        <a class="nav-link" href="{% url 'ad_viewblog' %}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
-                            Blog
-                        </a>
+                        <div class="collapse" id="vehiclesMenu" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'admin_vehicles' %}">Vehicles</a>
+                                <a class="nav-link" href="{% url 'admin_rental_requests' %}">Car Rent Submissions</a>
+                            </nav>
+                        </div>
 
                     </div>
                 </div>
@@ -140,11 +120,9 @@
         <div id="layoutSidenav_content">
             <main class="py-4 px-4">
                 {% block content %}
-                <!-- Page specific content goes here -->
                 {% endblock %}
             </main>
 
-            <!-- Footer -->
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">

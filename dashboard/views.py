@@ -13,31 +13,39 @@ from app.models import AboutUs, Vehicle
 from django.contrib import messages
 from app.models import CarRentalRequest, CarSpec
 from .forms import TestimonialForm 
+from app.models import ServiceImage
 
 # Create your views here.
 def dashboard(request):
     return render(request, 'dashboard/base/admin_base.html')
 
+
 def services(request):
     services_section = ServicesSection.objects.last()
-    services_offered_list = ServicesOffered.objects.all()[:4]
+    services_offered_list = ServicesOffered.objects.select_related('image').all()
     context = {
         'services_section': services_section,
         'services_offered_list': services_offered_list
     }
-    return render(request,'dashboard/services/ad_services.html',context)
+    return render(request, 'dashboard/services/ad_services.html', context)
 
 
 def add_service(request):
     if request.method == 'POST':
         service_name = request.POST.get('service_name')
         service_desc = request.POST.get('service_desc')
+        service_image_file = request.FILES.get('service_image')
 
         if service_name and service_desc:
-            ServicesOffered.objects.create(
+            new_service = ServicesOffered.objects.create(
                 services_offered=service_name,
                 services_offered_desc=service_desc
             )
+
+            # Save image if uploaded
+            if service_image_file:
+                ServiceImage.objects.create(service=new_service, image=service_image_file)
+
             messages.success(request, "Service added successfully!")
             return redirect('service')
         else:
@@ -70,24 +78,39 @@ def edit_services_section(request):
     context = {'services_section': services_section}
     return render(request, 'dashboard/services/edit_services_section.html', context)
 
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+
 def edit_service_offered(request, id):
     service_item = get_object_or_404(ServicesOffered, id=id)
 
     if request.method == 'POST':
         title = request.POST.get('services_offered')
         description = request.POST.get('services_offered_desc')
+        service_image_file = request.FILES.get('service_image')
 
+        # Update title and description
         service_item.services_offered = title
         service_item.services_offered_desc = description
         service_item.save()
 
+        # Handle image update/create
+        if service_image_file:
+            # If related image object exists, update it; else create new
+            if hasattr(service_item, 'image'):
+                service_item.image.image = service_image_file
+                service_item.image.save()
+            else:
+                ServiceImage.objects.create(service=service_item, image=service_image_file)
+
         messages.success(request, "Service updated successfully.")
-        return redirect('service')  
+        return redirect('service')
 
     context = {
-        'service_item': service_item
+        'service_item': service_item,
     }
     return render(request, 'dashboard/services/edit_service_offered.html', context)
+
 
 def delete_service(request, id):
     service = get_object_or_404(ServicesOffered, id=id)
@@ -110,7 +133,7 @@ def trip_request(request):
 
 
 def ad_about(request):
-    about = AboutUs.objects.last()
+    about = AboutUs.objects.first()
 
     if request.method == "POST":
         about.title = request.POST.get("title")
@@ -123,7 +146,7 @@ def ad_about(request):
 
         about.save()
         messages.success(request, "About section updated successfully.")
-        return redirect('ad_about')
+        return redirect('ad_viewabout')
 
     context = {
         'about': about

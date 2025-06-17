@@ -1,42 +1,51 @@
-{% extends "dashboard/base/admin_base.html" %}
-{% block title %}Edit About Section{% endblock %}
+{% extends 'dashboard/base/admin_base.html' %}
+{% load static %}
+
+{% block title %}Edit About Us{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Edit About Section</h2>
+<div class="container my-5">
+    <h2 class="mb-4 text-primary fw-bold">Edit About Us</h2>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="mb-3">
-            <label for="index_image" class="form-label">Main Image</label><br>
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ about.title }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="5">{{ about.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Index Image</label><br>
             {% if about.index_image %}
-                <img src="{{ about.index_image.url }}" alt="Current Image" style="max-height: 150px;" class="mb-2"><br>
+                <img src="{{ about.index_image.url }}" alt="Index Image" width="150" class="mb-2"><br>
             {% endif %}
-            <input type="file" class="form-control" name="index_image" id="index_image">
+            <input type="file" name="index_image">
         </div>
 
         <div class="mb-3">
-            <label for="sub_image" class="form-label">Sub Image</label><br>
+            <label class="form-label">Sub Image</label><br>
             {% if about.sub_image %}
-                <img src="{{ about.sub_image.url }}" alt="Current Image" style="max-height: 150px;" class="mb-2"><br>
+                <img src="{{ about.sub_image.url }}" alt="Sub Image" width="150" class="mb-2"><br>
             {% endif %}
-            <input type="file" class="form-control" name="sub_image" id="sub_image">
+            <input type="file" name="sub_image">
         </div>
 
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ about.title }}" required>
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{% url 'ad_viewabout' %}" class="btn btn-secondary">Cancel</a>
         </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" name="description" id="description" rows="4" required>{{ about.description }}</textarea>
-        </div>
-
-       <a href="{% url 'ad_viewabout' %}" class="btn btn-primary">Update</a>
-
     </form>
 </div>
 {% endblock %}

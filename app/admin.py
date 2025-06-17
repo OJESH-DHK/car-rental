@@ -4,10 +4,11 @@ from django.utils.html import format_html
 from .models import (
     Vehicle, Feature, Index, TripRequest, Testimonial, AboutUs,
     Experience, ServicesSection, ServicesOffered, Booking, CarRentalRequest,
-    VehicleImage, CarSpec, ContactDetail, ContactMessage, UserRentalBooking,
+    VehicleImage, CarSpec, ContactDetail, ContactMessage, UserRentalBooking,ServiceImage,
     Blog
 )
 
+admin.site.register(ServiceImage)
 admin.site.register(Vehicle)
 admin.site.register(CarSpec)
 admin.site.register(Feature)

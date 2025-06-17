@@ -108,6 +108,14 @@ class ServicesOffered(models.Model):
     def __str__(self):
         return "Services offered"
     
+class ServiceImage(models.Model):
+    service = models.OneToOneField(ServicesOffered, on_delete=models.CASCADE, related_name='image')
+    image = models.ImageField(upload_to='services/images/')
+
+    def __str__(self):
+        return f"Image for {self.service.services_offered}"
+
+    
 #Booking 
 class Booking(models.Model):
     vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='bookings')

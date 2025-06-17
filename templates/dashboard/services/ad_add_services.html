@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <h2 class="mb-4">Add New Service</h2>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-3">
             <label for="service_name" class="form-label">Service Name</label>
@@ -15,9 +15,12 @@
             <label for="service_desc" class="form-label">Service Description</label>
             <textarea class="form-control" id="service_desc" name="service_desc" rows="4" required></textarea>
         </div>
+        <div class="mb-3">
+            <label for="service_image" class="form-label">Service Image (optional)</label>
+            <input type="file" class="form-control" id="service_image" name="service_image" accept="image/*">
+        </div>
         <button type="submit" class="btn btn-success">Add Service</button>
         <a href="/dashboard/services/" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}
-

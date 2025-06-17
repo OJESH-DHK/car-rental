@@ -123,7 +123,7 @@ def pricing(request):
 
 def services(request):
     services_section = ServicesSection.objects.last()
-    top_services = ServicesOffered.objects.all()[:4] if services_section else []
+    top_services = ServicesOffered.objects.all() if services_section else []
     context = {
         'services_section': services_section,
         'top_services': top_services

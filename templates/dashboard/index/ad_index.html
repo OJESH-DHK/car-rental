@@ -1,0 +1,46 @@
+{% extends 'dashboard/base/admin_base.html' %}
+{% load static %}
+
+{% block title %}Manage Index Section{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-primary fw-bold">Manage Index Section</h2>
+
+    <div class="mb-3">
+        <a href="{% url 'admin_add_index_image' %}" class="btn btn-success">Add New Image</a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered align-middle">
+            <thead class="table-primary text-uppercase small">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in index_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>
+                        <img src="{{ item.image.url }}" alt="Image" class="img-thumbnail" style="max-height: 100px;">
+                    </td>
+                    <td>
+                        <a href="{% url 'admin_edit_index_image' item.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'admin_delete_index_image' item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No images found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

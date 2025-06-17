@@ -68,7 +68,7 @@
       <!-- Hero Text Column (Right) -->
       <div class="col-lg-7 text-white text-center text-lg-start ftco-animate w-100 px-3">
         <h1 class="mb-4 display-4 fw-bold" style="text-shadow: 2px 2px 8px rgba(127, 56, 56, 0.7);">
-          {{ index.title }}
+
         </h1>
 
         {% if index.video_link %}
@@ -83,7 +83,7 @@
         {% endif %}
 
         <p class="lead" style="font-size: 20px; max-width: 700px; text-shadow: 1px 1px 5px rgba(0,0,0,0.6);">
-          {{ index.description }}
+      
         </p>
       </div>
 
@@ -121,7 +121,7 @@
         </div>      
       </div>
     </div>
-    <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
+    <p><a href="{% url 'car' %}" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
   </div>
 </div>
 

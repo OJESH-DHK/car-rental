@@ -51,12 +51,14 @@
 
           <div class="card-body text-center">
             <h5 class="card-title fw-bold">
-  <a href="{% url 'service_detail' service.id %}" class="text-decoration-none text-dark">
-    {{ service.services_offered }}
-  </a>
-</h5>
+              <a href="{% url 'service_detail' service.id %}" class="text-decoration-none text-dark">
+                {{ service.services_offered }}
+              </a>
+            </h5>
 
-            <p class="card-text">{{ service.services_offered_desc|truncatechars:100 }}</p>
+            {% with service.services_offered_desc|striptags|truncatechars:100 as short_desc %}
+              <p class="card-text">{{ short_desc|safe }}</p>
+            {% endwith %}
           </div>
         </div>
       </div>
@@ -81,6 +83,5 @@
     </div>
   </div>
 </section>
-
 
 {% endblock %}

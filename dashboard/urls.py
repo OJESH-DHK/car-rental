@@ -1,9 +1,13 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 
 urlpatterns = [
-    path('', views.dashboard, name='dashbard'),
+
+    path('', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('dashboard/', views.dashboard, name='dashbard'),
     path('services/',views.services,name='service'),
     path('services/add/', views.add_service, name='add_service'),
     path('services/section/edit/', views.edit_services_section, name='edit_services_section'),
@@ -18,6 +22,7 @@ urlpatterns = [
     path('dashboard/vehicle/edit/<int:vehicle_id>/', views.edit_vehicle, name='edit_vehicle'),
     path('admin-dashboard/rentals/', views.admin_rental_requests_view, name='admin_rental_requests'),
     path('rental-requests/<int:id>/', views.admin_rental_detail, name='admin_rental_detail'),
+    path('admin/rentals/delete/<int:id>/', views.delete_rental_request, name='delete_rental_request'),
     path('admin/contact-details/', views.admin_contact_details, name='admin_contact_details'),
     path('admin/contact-detail/edit/', views.admin_contact_detail_edit, name='admin_contact_detail_edit'),
     path('admin/contact-messages/', views.admin_contact_messages, name='admin_contact_messages'),

@@ -40,7 +40,7 @@
                         No Image
                     {% endif %}
                 </td>
-                <td style="max-width: 300px;">{{ about.description|linebreaks }}</td>
+                <td style="max-width: 300px;">{{ about.description|safe }}</td>
                 <td>
                     <a href="{% url 'ad_about' %}" class="btn btn-primary btn-sm">Edit</a>
                 </td>

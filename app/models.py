@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from ckeditor.fields import RichTextField
 
 class Feature(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -68,7 +69,7 @@ class AboutUs(models.Model):
     index_image = models.ImageField(upload_to='about_us/index_images/')
     sub_image = models.ImageField(upload_to='about_us/sub_images/')
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = RichTextField()  # CKEditor field here
 
     def __str__(self):
         return self.title
@@ -106,7 +107,8 @@ class ServicesSection(models.Model):
         
 class ServicesOffered(models.Model):
     services_offered = models.CharField(max_length=100, null=True, blank=True)
-    services_offered_desc = models.CharField(max_length=100, null=True)
+    services_offered_desc = RichTextField(null=True, blank=True)  # Use RichTextField for CKEditor
+
     def __str__(self):
         return "Services offered"
     

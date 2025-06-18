@@ -34,7 +34,7 @@
           <img src="{{ service.image.image.url }}" alt="{{ service.services_offered }}" class="img-fluid rounded mb-4" />
         {% endif %}
         <p style="font-size: 1.2rem; line-height: 1.6; color: #444;">
-          {{ service.services_offered_desc }}
+          {{ service.services_offered_desc|safe }}
         </p>
 
         <a href="{% url 'service' %}" class="btn btn-outline-primary mt-3">← Back to Services</a>
@@ -48,7 +48,9 @@
           <li class="list-group-item">
             <a href="{% url 'service_detail' latest.id %}" class="text-decoration-none text-dark">
               <strong>{{ latest.services_offered }}</strong><br>
-              <small class="text-muted">{{ latest.services_offered_desc|truncatechars:70 }}</small>
+              {% with latest.services_offered_desc|striptags|truncatechars:70 as short_desc %}
+                <small class="text-muted">{{ short_desc|safe }}</small>
+              {% endwith %}
             </a>
           </li>
           {% empty %}

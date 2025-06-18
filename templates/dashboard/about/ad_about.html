@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label class="form-label">Description</label>
-            <textarea class="form-control" name="description" rows="5">{{ about.description }}</textarea>
+            <textarea class="form-control" name="description" id="description" rows="5">{{ about.description|safe }}</textarea>
         </div>
 
         <div class="mb-3">
@@ -48,4 +48,10 @@
         </div>
     </form>
 </div>
+
+<!-- CKEditor Script -->
+<script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description');
+</script>
 {% endblock %}

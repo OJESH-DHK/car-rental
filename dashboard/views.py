@@ -1,25 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from app.models import (
-    Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience, 
+    Vehicle, Index, TripRequest, AboutUs, Testimonial, Experience,
     ServicesSection, ServicesOffered, CarRentalRequest, ContactDetail, ContactMessage,
-    Blog
+    Blog, VehicleImage, CarSpec, ServiceImage, Booking, UserRentalBooking
 )
-from app.models import Vehicle, VehicleImage
-from .forms import ContactDetailForm, BlogForm
-from app.models import Index
-from app.models import AboutUs, Vehicle
-from django.contrib import messages
-from app.models import CarRentalRequest, CarSpec
-from .forms import TestimonialForm 
-from app.models import ServiceImage
+from .forms import ContactDetailForm, BlogForm, TestimonialForm
 
-# Create your views here.
+@login_required
 def dashboard(request):
     return render(request, 'dashboard/base/admin_base.html')
 
-
+@login_required
 def services(request):
     services_section = ServicesSection.objects.last()
     services_offered_list = ServicesOffered.objects.select_related('image').all()
@@ -29,7 +23,7 @@ def services(request):
     }
     return render(request, 'dashboard/services/ad_services.html', context)
 
-
+@login_required
 def add_service(request):
     if request.method == 'POST':
         service_name = request.POST.get('service_name')
@@ -42,7 +36,6 @@ def add_service(request):
                 services_offered_desc=service_desc
             )
 
-            # Save image if uploaded
             if service_image_file:
                 ServiceImage.objects.create(service=new_service, image=service_image_file)
 
@@ -50,12 +43,10 @@ def add_service(request):
             return redirect('service')
         else:
             messages.error(request, "All fields are required.")
-    
+
     return render(request, 'dashboard/services/ad_add_services.html')
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-
+@login_required
 def edit_services_section(request):
     services_section = ServicesSection.objects.last()
 
@@ -73,14 +64,12 @@ def edit_services_section(request):
 
         services_section.save()
         messages.success(request, "Services section updated successfully.")
-        return redirect('service')  
+        return redirect('service')
 
     context = {'services_section': services_section}
     return render(request, 'dashboard/services/edit_services_section.html', context)
 
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib import messages
-
+@login_required
 def edit_service_offered(request, id):
     service_item = get_object_or_404(ServicesOffered, id=id)
 
@@ -89,14 +78,11 @@ def edit_service_offered(request, id):
         description = request.POST.get('services_offered_desc')
         service_image_file = request.FILES.get('service_image')
 
-        # Update title and description
         service_item.services_offered = title
         service_item.services_offered_desc = description
         service_item.save()
 
-        # Handle image update/create
         if service_image_file:
-            # If related image object exists, update it; else create new
             if hasattr(service_item, 'image'):
                 service_item.image.image = service_image_file
                 service_item.image.save()
@@ -111,27 +97,24 @@ def edit_service_offered(request, id):
     }
     return render(request, 'dashboard/services/edit_service_offered.html', context)
 
-
+@login_required
 def delete_service(request, id):
     service = get_object_or_404(ServicesOffered, id=id)
     service.delete()
     messages.success(request, "Service deleted successfully.")
     return redirect('service')
 
-
-
+@login_required
 def about_view(request):
-    about = AboutUs.objects.first() 
+    about = AboutUs.objects.first()
     return render(request, 'dashboard/about/ad_viewabout.html', {'about': about})
 
-
+@login_required
 def trip_request(request):
     trip_requests = TripRequest.objects.all().order_by('-created_at')
     return render(request, 'dashboard/trip_request/triprequest.html', {'trip_requests': trip_requests})
 
-
-
-
+@login_required
 def ad_about(request):
     about = AboutUs.objects.first()
 
@@ -153,18 +136,19 @@ def ad_about(request):
     }
     return render(request, 'dashboard/about/ad_about.html', context)
 
-#add Vehicle
-
+@login_required
 def ad_vehicle(request):
     vehicles = Vehicle.objects.all()
     return render(request, 'dashboard/vehicle/ad_vehicle.html', {'vehicles': vehicles})
 
-
+@login_required
 def delete_vehicle(request, id):
     vehicle = get_object_or_404(Vehicle, id=id)
     vehicle.delete()
     messages.success(request, "Vehicle deleted successfully.")
-    return redirect('admin_vehicles')  # Make sure this name matches your URL
+    return redirect('admin_vehicles')
+
+@login_required
 def edit_vehicle(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
@@ -176,32 +160,25 @@ def edit_vehicle(request, vehicle_id):
         vehicle.seats = request.POST.get('seats')
         vehicle.mileage = request.POST.get('mileage')
         vehicle.luggage_capacity = request.POST.get('luggage_capacity')
-        vehicle.description = request.POST.get('description')  # NEW
+        vehicle.description = request.POST.get('description')
 
         if 'image' in request.FILES:
             vehicle.image = request.FILES['image']
 
         vehicle.save()
         messages.success(request, "Vehicle updated successfully.")
-        return redirect('admin_vehicles')  # Change to your actual URL name
+        return redirect('admin_vehicles')
 
     return render(request, 'dashboard/vehicle/edit_vehicle.html', {'vehicle': vehicle})
 
-
-
-
-
-
-
+@login_required
 def admin_add_vehicle(request):
     if request.method == 'POST':
         try:
-            # Check multiple images count
             if len(request.FILES.getlist('vehicle_images')) > 10:
                 messages.error(request, "You can upload a maximum of 10 vehicle images.")
-                return redirect('admin_add_vehicle')  # Adjust if your URL name differs
+                return redirect('admin_add_vehicle')
 
-            # Create the vehicle instance with description
             vehicle = Vehicle.objects.create(
                 car_brand=request.POST.get('car_brand'),
                 car_model=request.POST.get('car_model'),
@@ -211,10 +188,9 @@ def admin_add_vehicle(request):
                 mileage=request.POST.get('mileage') or 0,
                 luggage_capacity=request.POST.get('luggage_capacity') or 0,
                 description=request.POST.get('description'),
-                image=request.FILES.get('image')  # Main image
+                image=request.FILES.get('image')
             )
 
-            # Save additional images
             for image in request.FILES.getlist('vehicle_images'):
                 VehicleImage.objects.create(vehicle=vehicle, image=image)
 
@@ -227,21 +203,24 @@ def admin_add_vehicle(request):
 
     return render(request, 'dashboard/vehicle/add_vehicle.html')
 
-
-
-
-
-from app.models import CarRentalRequest
-
+@login_required
 def admin_rental_requests_view(request):
     rentals = CarRentalRequest.objects.all().order_by('-submitted_at')
     return render(request, 'dashboard/put_on_rent/car_rental_requests.html', {'rentals': rentals})
 
+@login_required
+def delete_rental_request(request, id):
+    rental = get_object_or_404(CarRentalRequest, id=id)
+    if request.method == 'POST':
+        rental.delete()
+        messages.success(request, "Rental request deleted successfully.")
+    return redirect('admin_rental_requests')
+
+@login_required
 def admin_rental_detail(request, id):
     rental = get_object_or_404(CarRentalRequest, id=id)
 
     if request.method == 'POST':
-        # Update all editable fields from POST data
         rental.full_name = request.POST.get('full_name', rental.full_name)
         rental.phone_number = request.POST.get('phone_number', rental.phone_number)
         rental.car_brand = request.POST.get('car_brand', rental.car_brand)
@@ -249,25 +228,24 @@ def admin_rental_detail(request, id):
         rental.description = request.POST.get('description', rental.description)
         rental.status = request.POST.get('status', rental.status)
 
-        # For images, normally you handle file uploads separately, 
-        # but if you want to handle bluebook_image here:
         if 'bluebook_image' in request.FILES:
             rental.bluebook_image = request.FILES['bluebook_image']
 
         rental.save()
         messages.success(request, "Rental request updated successfully.")
-        return redirect('admin_rental_requests')  # or redirect back to detail page if preferred
+        return redirect('admin_rental_requests')
 
     context = {
         'rental': rental,
     }
     return render(request, 'dashboard/put_on_rent/rental_detail.html', context)
 
-
+@login_required
 def admin_contact_details(request):
     contact_detail = ContactDetail.objects.first()
     return render(request, 'dashboard/admin_contact_details.html', {'detail': contact_detail})
 
+@login_required
 def admin_contact_detail_edit(request):
     contact_detail, created = ContactDetail.objects.get_or_create(pk=1)
 
@@ -276,20 +254,23 @@ def admin_contact_detail_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Contact details updated successfully.")
-            return redirect(reverse('admin_contact_details'))  # Redirect to the contact details page
+            return redirect(reverse('admin_contact_details'))
     else:
         form = ContactDetailForm(instance=contact_detail)
 
     return render(request, 'dashboard/admin_contact_detail_edit.html', {'form': form})
 
+@login_required
 def admin_contact_messages(request):
     messages = ContactMessage.objects.all().order_by('-created_at')
     return render(request, 'dashboard/admin_contact_messages.html', {'messages': messages})
 
+@login_required
 def ad_index(request):
     items = Index.objects.all()
     return render(request, 'dashboard/index/ad_index.html', {'index_items': items})
 
+@login_required
 def edit_index_image(request, id):
     index = get_object_or_404(Index, id=id)
 
@@ -297,12 +278,11 @@ def edit_index_image(request, id):
         if request.FILES.get('image'):
             index.image = request.FILES['image']
             index.save()
-        return redirect('ad_index')  # Replace with your actual list view name
+        return redirect('ad_index')
 
     return render(request, 'dashboard/index/edit_index_image.html', {'index': index})
 
-
-
+@login_required
 def admin_rental_specs(request, id):
     rental = get_object_or_404(CarRentalRequest, id=id)
     specs = getattr(rental, 'specs', None)
@@ -339,8 +319,7 @@ def admin_rental_specs(request, id):
         'specs': specs,
     })
 
-from app.models import Booking, UserRentalBooking
-
+@login_required
 def booking_dashboard(request):
     admin_bookings = Booking.objects.select_related('vehicle').order_by('-created_at')
     user_bookings = UserRentalBooking.objects.select_related('rental').order_by('-created_at')
@@ -350,7 +329,7 @@ def booking_dashboard(request):
         'user_bookings': user_bookings,
     })
 
-
+@login_required
 def delete_admin_booking(request, id):
     booking = get_object_or_404(Booking, id=id)
     if request.method == 'POST':
@@ -358,6 +337,7 @@ def delete_admin_booking(request, id):
         messages.success(request, 'Admin booking deleted successfully.')
     return redirect('booking_dashboard')
 
+@login_required
 def delete_user_booking(request, id):
     booking = get_object_or_404(UserRentalBooking, id=id)
     if request.method == 'POST':
@@ -365,12 +345,12 @@ def delete_user_booking(request, id):
         messages.success(request, 'User booking deleted successfully.')
     return redirect('booking_dashboard')
 
-from app.models import Testimonial  
-
+@login_required
 def admin_testimonials(request):
     testimonials = Testimonial.objects.all()
     return render(request, 'dashboard/testimonial/admin_testimonials.html', {'testimonials': testimonials})
 
+@login_required
 def edit_testimonial(request, pk):
     testimonial = get_object_or_404(Testimonial, pk=pk)
     if request.method == 'POST':
@@ -383,13 +363,14 @@ def edit_testimonial(request, pk):
         form = TestimonialForm(instance=testimonial)
     return render(request, 'dashboard/testimonial/edit_testimonial.html', {'form': form})
 
+@login_required
 def delete_testimonial(request, pk):
     testimonial = get_object_or_404(Testimonial, pk=pk)
     testimonial.delete()
     messages.success(request, 'Testimonial deleted successfully.')
     return redirect('admin_testimonials')
 
-
+@login_required
 def add_testimonial(request):
     if request.method == 'POST':
         form = TestimonialForm(request.POST, request.FILES)
@@ -401,11 +382,9 @@ def add_testimonial(request):
         form = TestimonialForm()
     return render(request, 'dashboard/testimonial/add_testimonial.html', {'form': form})
 
-from app.models import Experience
-from django.contrib import messages
-
+@login_required
 def admin_counter(request):
-    experience = Experience.objects.last()  # assuming one row
+    experience = Experience.objects.last()
 
     if request.method == 'POST':
         experience.year_experienced = request.POST.get('year_experienced', 0)
@@ -418,17 +397,18 @@ def admin_counter(request):
 
     return render(request, 'dashboard/counter/admin_counter.html', {'experience': experience})
 
-
+@login_required
 def ad_viewblog(request):
     blogs = Blog.objects.all().order_by('-published_date')
     return render(request, 'dashboard/blog/ad_viewblog.html', {'blogs': blogs})
 
+@login_required
 def ad_addblog(request):
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             blog = form.save(commit=False)
-            blog.author = request.user  # or assign author appropriately
+            blog.author = request.user
             blog.save()
             messages.success(request, "Blog created successfully.")
             return redirect('ad_viewblog')
@@ -442,7 +422,7 @@ def ad_addblog(request):
     }
     return render(request, 'dashboard/blog/blog_form.html', context)
 
-
+@login_required
 def ad_editblog(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     if request.method == 'POST':
@@ -461,26 +441,29 @@ def ad_editblog(request, blog_id):
     }
     return render(request, 'dashboard/blog/blog_form.html', context)
 
+@login_required
 def ad_deleteblog(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     if request.method == 'POST':
         blog.delete()
         messages.success(request, "Blog deleted successfully.")
         return redirect('ad_viewblog')
-    
+
     context = {
         'blog': blog,
     }
     return render(request, 'dashboard/blog/ad_deleteblog.html', context)
 
+@login_required
 def delete_trip_request(request, id):
     trip = get_object_or_404(TripRequest, id=id)
     trip.delete()
     messages.success(request, "Trip request deleted successfully.")
-    return redirect('ad_tripreq')  
+    return redirect('ad_tripreq')
 
+@login_required
 def delete_contact_message(request, id):
     message = get_object_or_404(ContactMessage, id=id)
     message.delete()
     messages.success(request, "Message deleted successfully.")
-    return redirect('admin_contact_messages')  # replace with your actual URL name
+    return redirect('admin_contact_messages')

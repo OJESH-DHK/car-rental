@@ -31,15 +31,20 @@
                     {% endif %}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
-                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display:none;">
-                            {% csrf_token %}
+                    <a class="dropdown-item" href="{% url 'change_password' %}">
+                         <i class="fas fa-lock me-1"></i> Change Password
+                    </a>
+
+                     <li>
+                         <form id="logout-form" action="{% url 'logout' %}" method="post" style="display:none;">
+                    `   {% csrf_token %}
                         </form>
                         <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
+                     Logout
+                     </a>
                     </li>
                 </ul>
+
             </li>
         </ul>
     </nav>

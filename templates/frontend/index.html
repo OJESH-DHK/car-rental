@@ -3,7 +3,20 @@
 
 {% block title %}Home | Carbook{% endblock %}
 
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+
 {% block content %}
+
+
+
 
 <style>
   /* Previous hero styles ... (keep as is) */
@@ -44,9 +57,21 @@
   <div class="container py-5 position-relative">
     <div class="row align-items-center justify-content-between g-4">
 
+
+      
+
       <!-- Form Column (Left) -->
       <div class="col-lg-5 col-md-10 mx-auto">
+        
         <br><br>
+        {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
         <form action="{% url 'index' %}" method="POST" class="request-form ftco-animate bg-primary rounded shadow-lg">
           {% csrf_token %}
           <h2 class="text-white mb-4 text-center">Make Your Trip</h2>
